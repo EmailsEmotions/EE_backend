@@ -21,6 +21,7 @@
         <module>config-server</module>
         <module>admin-server</module>
         <module>users-service</module>
+        <module>formality-service</module>
     </modules>
 
 	<properties>
