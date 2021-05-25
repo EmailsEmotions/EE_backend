@@ -91,3 +91,7 @@ https://stackoverflow.com/questions/33921557/understanding-spring-cloud-eureka-s
 https://stackoverflow.com/questions/32616329/eureka-never-unregisters-a-service
 ## Feign Clients
 https://www.baeldung.com/spring-cloud-netflix-eureka
+
+# Spring Cloud Config Client
+https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html
+
