@@ -12,6 +12,7 @@ import pl.tul.emailsemotions.userservice.model.UserRepository;
 import java.sql.Date;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RequestMapping("/users")
 @RestController
@@ -28,7 +29,8 @@ public class UserResource {
 
     @GetMapping(value = "/{userId}")
     public User findUser(@PathVariable("userId") int userId) {
-
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 999 + 1);
+        log.info("User {} fetched", String.valueOf(randomNum));
         return new User(1L,"username","email@abc.pl","de");
 //        return userRepository.findById(userId);
     }
