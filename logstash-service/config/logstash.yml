@@ -1,0 +1,6 @@
+# Logstash configuration file
+# https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html
+# https://www.elastic.co/guide/en/logstash/current/docker-config.html
+# By default the setting for monitoring.elasticsearch.hosts is http://elasticsearch:9200
+http.host: "0.0.0.0"
+path.config: /usr/share/logstash/pipeline
