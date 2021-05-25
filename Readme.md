@@ -75,4 +75,7 @@ You have to give url for `spring.cloud.config.uri` that corresponds to config se
 # Spring Admin
 https://codecentric.github.io/spring-boot-admin/2.3.1/#_what_is_spring_boot_admin
 
+## Configuration
+https://docs.spring.io/spring-boot/docs/1.5.22.RELEASE/reference/html/boot-features-external-config.html
+https://stackoverflow.com/questions/49274032/spring-boot-configuration-how-to-return-always-same-random-value-when-reference
 
