@@ -196,3 +196,24 @@ logback-spring.xml neccesary configuration
     </root>
 </configuration>
 ```
+
+#Grafana
+Todo
+
+#Sleuth & Zipkin
+Todo
+
+# JMeter
+TODO after api-gateway so we can load-balance things.
+
+# Prometheus
+TODO
+
+Some metrics file
+```
+  metrics:
+    distribution:
+      percentiles-histogram.http.server.requests: false
+      percentiles.http.server.requests: 0.5, 0.9, 0.95, 0.99, 0.999
+      sla.http.server.requests: 500ms, 2000ms
+```
