@@ -95,3 +95,104 @@ https://www.baeldung.com/spring-cloud-netflix-eureka
 # Spring Cloud Config Client
 https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html
 
+# ELK stack
+The ELK stack could run by configuring ELK on your machine or running `elk-docker-compose.yaml`
+```shell
+$ docker-compose -f elk-docker-compose.yaml up
+```
+## Elasticsearch
+Elasticsearch configuration is in `elk-docker-compose.yaml` file.
+Elastic for now uses docker volumes instead of proper folder (subject to discuss)
+
+## Kibana
+Kibana is set on default 5601 port.
+To get Kibana working with app you have to setup [Index patterns](https://www.elastic.co/guide/en/kibana/7.12/index-patterns.html)
+.
+## Index patterns
+An index pattern can point to a specific index, for example, your log data from yesterday, or all indices that contain your log data.
+
+Go to `/app/management/kibana/indexPatterns` and click `Create index pattern`.
+
+Then define an index pattern for eg. `emailsemotions-api*`
+![docs/ELK stack/kibana/create-index-pattern-step-1.png](docs/ELK stack/kibana/create-index-pattern-step-1.png)
+
+Tap `Next step >`. As time field select `@timestamp`. And `Create index pattern`
+
+![docs/ELK stack/kibana/create-index-pattern-step-2.png](docs/ELK stack/kibana/create-index-pattern-step-2.png)
+
+Now you can check if all fields are correct (most of times they are)
+## Logs
+To show logs from app in Kibana go to `/app/logs/` and Settings `/app/logs/settings`
+
+You have to setup name for source configuration and most important the Log indices.
+Log indices is value that you choose for indexPattern so in our example it will be `emailsemotions*`
+![docs/ELK stack/kibana/setup-logs-1.png](docs/ELK stack/kibana/setup-logs-1.png)
+
+Next you can add some more Log columns eg. `application_name` or `logger_name`
+![docs/ELK stack/kibana/setup-logs-2.png](docs/ELK stack/kibana/setup-logs-2.png)
+
+After that you can see your logs in Stream tab `/app/logs/stream`
+
+## Logstash / Logback
+https://lankydan.dev/2019/01/09/configuring-logback-with-spring-boot
+https://github.com/lankydan/logback-with-springboot-config
+
+logback-spring.xml neccesary configuration
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- Required for Loglevel managment into the Spring Petclinic Admin Server-->
+    <jmxConfigurator/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+<!--    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>-->
+
+    <!-- Load spring properites    -->
+    <springProperty scope="context" name="application_name" source="spring.application.name"/>
+    <springProperty scope="context" name="logstash-server" source="spring.logstash.server"/>
+    <springProperty scope="context" name="logstash-port" source="spring.logstash.port"/>
+    <springProperty scope="context" name="environment" source="spring.profiles.active"/>
+    <property name="LOG_PATH" value="logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/${application_name}.log"/>
+    <property name="LOG_FILE_ARCHIVE" value="${LOG_PATH}/archive/${application_name}.log"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </layout>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_ARCHIVE}-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="CONSOLE_LOGSTASH" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"></encoder>
+    </appender>
+
+    <appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <remoteHost>${logstash-server}</remoteHost>
+        <port>${logstash-port}</port>
+        <!-- encoder is required -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <appender name="ASYNC_LOGSTASH_TCP" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH_TCP"/>
+    </appender>
+
+    <root level="INFO" additivity="false">
+        <appender-ref ref="ASYNC_LOGSTASH_TCP" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ASYNC_FILE"/>
+    </root>
+</configuration>
+```
