@@ -72,4 +72,7 @@ spring:
 ```
 You have to give url for `spring.cloud.config.uri` that corresponds to config server
 
+# Spring Admin
+https://codecentric.github.io/spring-boot-admin/2.3.1/#_what_is_spring_boot_admin
+
 
