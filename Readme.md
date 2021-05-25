@@ -79,3 +79,15 @@ https://codecentric.github.io/spring-boot-admin/2.3.1/#_what_is_spring_boot_admi
 https://docs.spring.io/spring-boot/docs/1.5.22.RELEASE/reference/html/boot-features-external-config.html
 https://stackoverflow.com/questions/49274032/spring-boot-configuration-how-to-return-always-same-random-value-when-reference
 
+# Spring Eureka Discovery
+https://cloud.spring.io/spring-cloud-netflix/multi/multi__service_discovery_eureka_clients.html
+## Microservices instances
+### baeldung
+https://www.baeldung.com/eureka-self-preservation-renewal
+### Stack
+https://stackoverflow.com/questions/52297664/spring-cloud-eureka-server-self-preservation-and-renew-threshold
+https://stackoverflow.com/questions/54468805/eureka-client-instances-are-not-unregister-from-eureka-server-properly
+https://stackoverflow.com/questions/33921557/understanding-spring-cloud-eureka-server-self-preservation-and-renew-threshold
+https://stackoverflow.com/questions/32616329/eureka-never-unregisters-a-service
+## Feign Clients
+https://www.baeldung.com/spring-cloud-netflix-eureka
