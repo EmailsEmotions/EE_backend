@@ -7,9 +7,9 @@ spring:
   level:
     org.springframework: WARN
     org.hibernate: WARN
-  logstash:
-      server: localhost
-      port: 5000
+spring.logstash:
+  server: localhost
+  port: 5000
 ---
 spring:
   config:
@@ -18,6 +18,6 @@ spring:
   cloud:
     config:
       uri: http://config-server:8888
-    logstash:
-      server: docker
-      port: 5000
+spring.logstash:
+  server: logstash-service
+  port: 5000
