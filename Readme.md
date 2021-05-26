@@ -1,6 +1,11 @@
 # EmailsEmotions microservice backend
 
 # Important informations
+## Git Flow Setup
+```shell
+git flow init [Enter]x5
+```
+More informations here https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 ## Config Server Setup
 To properly use this backend you must have proper configuration files.
 
