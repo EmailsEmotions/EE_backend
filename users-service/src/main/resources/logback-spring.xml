@@ -8,6 +8,7 @@
 
     <!-- Load spring properites    -->
     <springProperty scope="context" name="application_name" source="spring.application.name"/>
+    <springProperty scope="context" name="app_uuid" source="info.app.uuid"/>
     <springProperty scope="context" name="logstash-server" source="spring.logstash.server"/>
     <springProperty scope="context" name="logstash-port" source="spring.logstash.port"/>
     <springProperty scope="context" name="environment" source="spring.profiles.active"/>
@@ -38,7 +39,9 @@
         <remoteHost>${logstash-server}</remoteHost>
         <port>${logstash-port}</port>
         <!-- encoder is required -->
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app_uuid":"${app_uuid}"}</customFields>
+        </encoder>
     </appender>
 
     <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
