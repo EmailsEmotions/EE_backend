@@ -1,0 +1,124 @@
+version: '3'
+services:
+  #  ElasticSearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: elasticsearch-service
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    volumes:
+      - data-es:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      #      - cluster.initial_master_nodes=elasticsearch
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+  #        mem_limit: 500m
+  #        cap_add:
+  #          - IPC_LOCK
+  #    volumes:
+  #      - ./elasticsearch/data:/usr/share/elasticsearch/data:rw
+#  Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    container_name: kibana-service
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+  # Logstash
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.12.1
+    container_name: logstash-service
+    restart: unless-stopped
+    command: logstash -f /usr/share/logstash/pipeline
+    volumes:
+      - ./logstash-service/config:/usr/share/logstash/config:ro
+      - ./logstash-service/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+      - "12204:12204"
+    depends_on:
+      - elasticsearch
+    # Logstash
+  config-server:
+    image: emails-emotions/config-server
+    container_name: config-server
+    build:
+      context: ./config-server
+    mem_limit: 512M
+    depends_on:
+      - logstash
+    ports:
+      - 8888:8888
+  discovery-server:
+    image: emails-emotions/discovery-server
+    container_name: discovery-server
+    build:
+        context: ./discovery-server
+    mem_limit: 512M
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8761:8761
+    links:
+      - logstash
+  api-gateway:
+    image: emails-emotions/api-gateway
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 8080:8080
+    links:
+      - logstash
+  admin-server:
+    image: emails-emotions/admin-server
+    container_name: admin-server
+    build:
+      context: ./admin-server
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 9090:9090
+    links:
+      - logstash
+  users-service:
+    image: emails-emotions/users-service
+    container_name: users-service
+    build:
+      context: ./users-service
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 8083:8083
+    links:
+      - logstash
+volumes:
+  data-es:
