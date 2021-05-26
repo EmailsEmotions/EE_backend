@@ -139,6 +139,48 @@ https://github.com/lankydan/logback-with-springboot-config
 https://github.com/logstash/logstash-logback-encoder
 https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/boot-features-logging.html
 
+To have logstash for diffrent index indices we can listen to some more ports in logstash.
+https://www.elastic.co/guide/en/logstash/current/multiple-input-output-plugins.html
+```editorconfig
+# Input on tcp:5000 same as in docker-compose file
+input {
+    tcp {
+        port => 5000
+        add_field => [ "source", "emailsemotions-api-users-service" ]
+        codec => json_lines
+    }
+    tcp {
+        port => 5001
+        add_field => [ "source", "emailsemotions-api-formality-service" ]
+        codec => json_lines
+     }
+}
+
+# Output is looking for emailsemotions api field and then goes for index
+# That is configured as emailsemotions-api-%{+YYYY.MM.dd} eg. emailsemotions-api-2021.05.25
+output {
+    if [source] == "emailsemotions-api-users-service" {
+        elasticsearch {
+            hosts => [ "elasticsearch:9200"]
+            index => "emailsemotions-api-users-service%{+YYYY.MM.dd}"
+            ssl => false
+            ssl_certificate_verification => false
+        }
+    }
+    if [source] == "emailsemotions-api-users-service" {
+        elasticsearch {
+            hosts => [ "elasticsearch:9200"]
+            index => "emailsemotions-api-formality-service%{+YYYY.MM.dd}"
+            ssl => false
+            ssl_certificate_verification => false
+        }
+    }
+    file {
+        path => "/path/to/target/file"
+    }
+}
+```
+
 logback-spring.xml neccesary configuration
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -199,6 +241,10 @@ logback-spring.xml neccesary configuration
 </configuration>
 ```
 
+# Api Gateway
+https://www.youtube.com/watch?v=5_Bt_OEg0no
+Circuit Breaker Pattern
+
 #Grafana
 Todo
 
@@ -206,8 +252,22 @@ Todo
 Todo
 
 # JMeter
-TODO after api-gateway so we can load-balance things.
+We use Jmeter in docker from here https://github.com/guitarrapc/docker-jmeter-gui
+To spin up JMeter container
+```shell
+docker run -itd --rm -v ${WORK_DIR}/:/root/jmeter/ -p 5900:5900 -p 3390:3389 guitarrapc/jmeter-gui:latest
+```
 
+This one gives you GUI. You have to connect using RDP or VPC
+Start->Remote Desktop Connection (Podłącz pulpit zdalny) on `localhost:3390`
+
+Then you can start adding test. Important things are `threadgroup` and `httprequest`.
+
+Both avaliable from `right-click -> add`
+
+![docs/JMeter/threadgroup.png](docs/JMeter/threadgroup.png)
+![docs/JMeter/httprequest.png](docs/JMeter/httprequest.png)
+**IMPORTANT !** as Server Name or IP you have to type `host.docker.internal` and then port number of service eg. **api-gateway** on 8080
 # Prometheus
 TODO
 
