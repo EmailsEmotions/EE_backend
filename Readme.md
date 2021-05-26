@@ -136,6 +136,8 @@ After that you can see your logs in Stream tab `/app/logs/stream`
 ## Logstash / Logback
 https://lankydan.dev/2019/01/09/configuring-logback-with-spring-boot
 https://github.com/lankydan/logback-with-springboot-config
+https://github.com/logstash/logstash-logback-encoder
+https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/reference/html/boot-features-logging.html
 
 logback-spring.xml neccesary configuration
 ```xml
@@ -217,3 +219,8 @@ Some metrics file
       percentiles.http.server.requests: 0.5, 0.9, 0.95, 0.99, 0.999
       sla.http.server.requests: 500ms, 2000ms
 ```
+
+# Docker configuration
+How to start applications properly
+
+https://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
