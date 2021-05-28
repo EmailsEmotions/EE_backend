@@ -2,6 +2,7 @@ spring:
   cloud:
     gateway:
       routes:
+#        - id: ee_backend_users-service_*
         - id: users-service
           uri: lb://users-service
           predicates:
