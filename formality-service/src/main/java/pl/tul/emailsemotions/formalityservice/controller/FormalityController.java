@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tul.emailsemotions.formalityservice.model.Text;
+import pl.tul.emailsemotions.formalityservice.services.FormalityService;
 
 @RestController
 @AllArgsConstructor
 public class FormalityController {
+    private final FormalityService formalityService;
 
     @PostMapping("/countnos")
     @ResponseBody
@@ -23,5 +25,12 @@ public class FormalityController {
             }
         }
         return ResponseEntity.ok("'" + text.getText() + "' contains " + count + " occurrences of word 'no'");
+    }
+
+    @PostMapping("/recognize")
+    @ResponseBody
+    @CrossOrigin(value = "*")
+    public ResponseEntity recognizeFormality(@RequestBody Text text) {
+        return ResponseEntity.ok(formalityService.recognizeFormality(text));
     }
 }
