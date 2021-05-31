@@ -122,5 +122,31 @@ services:
       - logstash
 #    deploy:
 #      replicas: 3
+  formality-service:
+    image: emails-emotions/formality-service
+    container_name: formality-service
+    build:
+      context: ./formality-service
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 8084:8084
+    links:
+      - logstash
+#  db-formality:
+#    image: mysql:5.7
+#    restart: always
+#    environment:
+#      MYSQL_DATABASE: 'formality'
+#      MYSQL_USER: 'root'
+#      MYSQL_PASSWORD: 'emailsemotions'
+#      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+#    ports:
+#      - '3306:3306'
+#    expose:
+#      - '3306'
 volumes:
   data-es:
