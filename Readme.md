@@ -289,3 +289,10 @@ Some metrics file
 How to start applications properly
 
 https://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
+
+
+# Database configuration
+Running container with mysql image:
+```
+docker run -d -e MYSQL_ROOT_PASSWORD=emailsemotions -e MYSQL_DATABASE=emailsemotions -p 3306:3306 mysql:5.7.8
+```
