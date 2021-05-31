@@ -24,7 +24,8 @@ public class Text {
 
     @OneToMany(
         cascade = CascadeType.ALL,
-        orphanRemoval = true
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
     )
     @JoinColumn(name = "text_id")
     private List<FormalityResult> formalityResults = new LinkedList<>();
