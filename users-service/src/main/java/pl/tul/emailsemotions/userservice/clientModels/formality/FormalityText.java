@@ -1,18 +1,16 @@
-package pl.tul.emailsemotions.userservice.clientModels;
+package pl.tul.emailsemotions.userservice.clientModels.formality;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.tul.emailsemotions.userservice.clientModels.BaseText;
 
-import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Text {
-    private Long id;
-    private String text;
+public class FormalityText extends BaseText {
     private List<FormalityResult> formalityResults = new LinkedList<>();
 }

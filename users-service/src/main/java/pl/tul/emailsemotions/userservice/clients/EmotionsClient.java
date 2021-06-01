@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.tul.emailsemotions.userservice.clientModels.BaseText;
 import pl.tul.emailsemotions.userservice.clientModels.emotions.EmotionsText;
-import pl.tul.emailsemotions.userservice.clientModels.formality.FormalityText;
 
 import java.util.List;
+
 @Component
-@FeignClient(value = "http://formality-service")
-public interface FormalityClient {
+@FeignClient(value = "http://emotions-service")
+public interface EmotionsClient {
 
     @RequestMapping(value="/text", method = RequestMethod.GET)
     List<BaseText> getAllBase();
 
     @RequestMapping(value="/text", method = RequestMethod.GET)
-    List<FormalityText> getAllFormality();
+    List<EmotionsText> getAllEmotions();
 }
