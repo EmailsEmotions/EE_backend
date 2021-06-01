@@ -2,15 +2,13 @@ package pl.tul.emailsemotions.userservice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import pl.tul.emailsemotions.userservice.clientModels.Text;
+import pl.tul.emailsemotions.userservice.clients.FormalityClient;
 import pl.tul.emailsemotions.userservice.model.User;
 import pl.tul.emailsemotions.userservice.model.UserRepository;
 
-import java.sql.Date;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UserResource {
 
     private final UserRepository userRepository;
+    private final FormalityClient formalityClient;
 
     @GetMapping
     public List<User> findAll() {
@@ -33,5 +32,10 @@ public class UserResource {
         log.info("User {} fetched", String.valueOf(randomNum));
         return new User(1L,"username","email@abc.pl","de");
 //        return userRepository.findById(userId);
+    }
+    @GetMapping("/getalltext")
+    @ResponseBody
+    public List<Text> getAll() {
+        return formalityClient.getAll();
     }
 }
