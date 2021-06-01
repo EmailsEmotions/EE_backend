@@ -15,3 +15,9 @@ spring:
             - Path=/api/formality/**
           filters:
             - StripPrefix=2
+        - id: emotions-service
+          uri: lb://emotions-service
+          predicates:
+            - Path=/api/emotions/**
+          filters:
+            - StripPrefix=2
