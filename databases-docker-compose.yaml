@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db-formality:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'formality'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3306:3306'
+    volumes:
+      - './docker/databases/formality:/docker-entrypoint-initdb.d'
+  db-emotions:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'emotions'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3307:3306'
+    volumes:
+      - './docker/databases/emotions:/docker-entrypoint-initdb.d'
+  db-users:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'users'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3308:3306'
+    volumes:
+      - './docker/databases/users:/docker-entrypoint-initdb.d'

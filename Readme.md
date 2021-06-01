@@ -1,6 +1,14 @@
 # EmailsEmotions microservice backend
 
 # Important informations
+## Docker
+Make sure to run `docker-compose stop` or `docker-compose down` or `docker-compose down -v` 
+or `docker-compose rm` to clear your working enviroment.
+`docker-compose down --remove`
+`docker-compose -f databases-docker-compose.yaml down`
+
+When something is not working for example database ;)
+
 ## Git Flow Setup
 ```shell
 git flow init [Enter]x5
@@ -296,3 +304,4 @@ Running container with mysql image:
 ```
 docker run -d -e MYSQL_ROOT_PASSWORD=emailsemotions -e MYSQL_DATABASE=formality -p 3306:3306 mysql:5.7.8
 ```
+https://nickjanetakis.com/blog/docker-tip-45-docker-compose-stop-vs-down
