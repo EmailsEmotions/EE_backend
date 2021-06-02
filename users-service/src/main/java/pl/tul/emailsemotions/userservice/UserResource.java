@@ -2,17 +2,17 @@ package pl.tul.emailsemotions.userservice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tul.emailsemotions.userservice.clientModels.BaseText;
 import pl.tul.emailsemotions.userservice.clientModels.emotions.EmotionsText;
 import pl.tul.emailsemotions.userservice.clientModels.formality.FormalityText;
 import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
 import pl.tul.emailsemotions.userservice.clients.FormalityClient;
+import pl.tul.emailsemotions.userservice.model.AccountType;
 import pl.tul.emailsemotions.userservice.model.User;
-import pl.tul.emailsemotions.userservice.model.UserRepository;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,21 +22,43 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class UserResource {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final FormalityClient formalityClient;
     private final EmotionsClient emotionsClient;
 
     @GetMapping
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userService.getAll();
+    }
+
+    @GetMapping(value = "/find")
+    public User findUser(@RequestParam("username") String username) {
+        return userService.findByUsername(username);
+    }
+
+    @PostMapping("/addUser")
+    public ResponseEntity add(@RequestBody User user) {
+        return ResponseEntity.ok(userService.add(user));
     }
 
     @GetMapping(value = "/{userId}")
-    public User findUser(@PathVariable("userId") int userId) {
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 999 + 1);
-        log.info("User {} fetched", String.valueOf(randomNum));
-        return new User(1L, "username", "email@abc.pl", "de");
-//        return userRepository.findById(userId);
+    public User findUser(@PathVariable("userId") Long userId) {
+        return userService.get(userId);
+    }
+
+    @PostMapping(value = "/{userId}/activate")
+    public Boolean activateUser(@PathVariable("userId") Long userId) {
+        return userService.changeActiveStatus(userId, true);
+    }
+
+    @PostMapping(value = "/{userId}/deactivate")
+    public Boolean deactivateUser(@PathVariable("userId") Long userId) {
+        return userService.changeActiveStatus(userId, false);
+    }
+
+    @PostMapping(value = "/{userId}/changeAccountType")
+    public Boolean changeAccountType(@PathVariable("userId") Long userId, @RequestParam("accounttype") AccountType accountType) {
+        return userService.changeAccountType(userId, accountType);
     }
 
     @GetMapping("/formalitytexts")
