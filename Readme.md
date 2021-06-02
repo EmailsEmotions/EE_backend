@@ -305,3 +305,7 @@ Running container with mysql image:
 docker run -d -e MYSQL_ROOT_PASSWORD=emailsemotions -e MYSQL_DATABASE=formality -p 3306:3306 mysql:5.7.8
 ```
 https://nickjanetakis.com/blog/docker-tip-45-docker-compose-stop-vs-down
+
+JPA Column configuration problems: https://stackoverflow.com/questions/25283198/spring-boot-jpa-column-name-annotation-ignored
+
+Just rename all your `@Column` to lowercase 
