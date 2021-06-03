@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Builder(toBuilder = true)
 @Setter
 @Getter
-@Entity(name = "FormalityResult")
-@Table(name = "formality_result")
-public class FormalityResult {
+@Entity
+@Table(name = "formality_evaluation")
+public class FormalityEvaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,9 +21,12 @@ public class FormalityResult {
     @Column(name = "text_id")
     private Long textId;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(name = "formality")
-    private Double formality;
+    private Integer formality;
 
     @Column(name = "informality")
-    private Double informality;
+    private Integer informality;
 }

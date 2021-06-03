@@ -1,5 +1,6 @@
 package pl.tul.emailsemotions.formalityservice.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,15 +26,31 @@ public class Text {
     @NotEmpty
     private String text;
 
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @OneToMany(
         cascade = CascadeType.ALL,
         orphanRemoval = true,
-        fetch = FetchType.EAGER
+        fetch = FetchType.LAZY
     )
     @JoinColumn(name = "text_id")
     private List<FormalityResult> formalityResults = new LinkedList<>();
 
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "text_id")
+    private List<FormalityEvaluation> formalityEvaluations = new LinkedList<>();
+
     public void addFormalityResult(FormalityResult formalityResult) {
         formalityResults.add(formalityResult);
+    }
+
+    public void addFormalityEvaluation(FormalityEvaluation formalityEvaluation) {
+        formalityEvaluations.add(formalityEvaluation);
     }
 }
