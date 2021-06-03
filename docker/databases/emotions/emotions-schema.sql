@@ -18,3 +18,15 @@ CREATE TABLE IF NOT EXISTS emotions_result (
      surprise DOUBLE,
      FOREIGN KEY (text_id) REFERENCES texts(id)
 ) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS emotions_evaluation (
+   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   text_id INT UNSIGNED,
+   user_id INT UNSIGNED,
+   angry TINYINT,
+   fear TINYINT,
+   happy TINYINT,
+   sad TINYINT,
+   surprise TINYINT,
+   FOREIGN KEY (text_id) REFERENCES texts(id)
+) engine=InnoDB;
