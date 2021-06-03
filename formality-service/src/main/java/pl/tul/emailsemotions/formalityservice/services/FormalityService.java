@@ -15,13 +15,14 @@ public class FormalityService {
     private final TextService textService;
 
     public FormalityResult recognizeFormality(Text text) {
+        textService.add(text);
         FormalityResult result = FormalityResult
             .builder()
+            .textId(text.getId())
             .formality(0.2)
             .informality(0.8)
             .build();
         text.addFormalityResult(result);
-        textService.add(text);
         formalityResultRepository.save(result);
         return result;
     }

@@ -11,22 +11,6 @@ import pl.tul.emailsemotions.formalityservice.services.FormalityService;
 public class FormalityController {
     private final FormalityService formalityService;
 
-    @PostMapping("/countnos")
-    @ResponseBody
-    @CrossOrigin(value = "*")
-    public ResponseEntity makeTest(@RequestBody Text text) {
-        String[] words = text.getText().split(" ");
-        String pattern = "no";
-
-        int count = 0;
-        for (String word: words) {
-            if (word.equalsIgnoreCase(pattern)) {
-                count += 1;
-            }
-        }
-        return ResponseEntity.ok("'" + text.getText() + "' contains " + count + " occurrences of word 'no'");
-    }
-
     @PostMapping("/recognize")
     @ResponseBody
     @CrossOrigin(value = "*")
