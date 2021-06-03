@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.tul.emailsemotions.emotionsservice.model.EmotionsResult;
 import pl.tul.emailsemotions.emotionsservice.model.Text;
 import pl.tul.emailsemotions.emotionsservice.repositories.EmotionsResultRepository;
-import pl.tul.emailsemotions.emotionsservice.repositories.TextRepository;
 
 
 @Service
@@ -14,7 +13,7 @@ import pl.tul.emailsemotions.emotionsservice.repositories.TextRepository;
 @Slf4j
 public class EmotionsService {
     private final EmotionsResultRepository emotionsResultRepository;
-    private final TextRepository textRepository;
+    private final TextService textService;
 
     public EmotionsResult recognizeFormality(Text text) {
         EmotionsResult result = EmotionsResult
@@ -26,7 +25,7 @@ public class EmotionsService {
             .surprise(0.3)
             .build();
         text.addEmotionsResult(result);
-        textRepository.save(text);
+        textService.add(text);
         emotionsResultRepository.save(result);
         return result;
     }

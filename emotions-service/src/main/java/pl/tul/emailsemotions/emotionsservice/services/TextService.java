@@ -26,4 +26,8 @@ public class TextService {
     public List<Text> getAll() {
         return textRepository.findAll();
     }
+
+    public Text add(Text text) {
+        return textRepository.save(text);
+    }
 }

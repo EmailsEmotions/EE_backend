@@ -6,14 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.tul.emailsemotions.formalityservice.model.FormalityResult;
 import pl.tul.emailsemotions.formalityservice.model.Text;
 import pl.tul.emailsemotions.formalityservice.repositories.FormalityResultRepository;
-import pl.tul.emailsemotions.formalityservice.repositories.TextRepository;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class FormalityService {
     private final FormalityResultRepository formalityResultRepository;
-    private final TextRepository textRepository;
+    private final TextService textService;
 
     public FormalityResult recognizeFormality(Text text) {
         FormalityResult result = FormalityResult
@@ -22,7 +21,7 @@ public class FormalityService {
             .informality(0.8)
             .build();
         text.addFormalityResult(result);
-        textRepository.save(text);
+        textService.add(text);
         formalityResultRepository.save(result);
         return result;
     }
