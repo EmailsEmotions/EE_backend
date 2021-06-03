@@ -23,6 +23,7 @@
         <module>admin-server</module>
         <module>users-service</module>
         <module>formality-service</module>
+        <module>emotions-service</module>
     </modules>
 
 	<properties>
