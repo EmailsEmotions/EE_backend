@@ -2,6 +2,7 @@ package pl.tul.emailsemotions.userservice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tul.emailsemotions.userservice.clientModels.BaseText;
@@ -12,15 +13,16 @@ import pl.tul.emailsemotions.userservice.clients.FormalityClient;
 import pl.tul.emailsemotions.userservice.model.AccountType;
 import pl.tul.emailsemotions.userservice.model.User;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@RequestMapping("/users")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class UserResource {
+public class UserController {
 
     private final UserService userService;
     private final FormalityClient formalityClient;
@@ -47,18 +49,39 @@ public class UserResource {
     }
 
     @PostMapping(value = "/{userId}/activate")
-    public Boolean activateUser(@PathVariable("userId") Long userId) {
-        return userService.changeActiveStatus(userId, true);
+    public ResponseEntity activateUser(@PathVariable("userId") Long userId) {
+        try {
+            userService.changeActiveStatus(userId, true);
+            HashMap<String, String> body = new HashMap<>();
+            body.put("active", "true");
+            return ResponseEntity.ok(body);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/{userId}/deactivate")
-    public Boolean deactivateUser(@PathVariable("userId") Long userId) {
-        return userService.changeActiveStatus(userId, false);
+    public ResponseEntity deactivateUser(@PathVariable("userId") Long userId) {
+        try {
+            userService.changeActiveStatus(userId, false);
+            HashMap<String, String> body = new HashMap<>();
+            body.put("active", "false");
+            return ResponseEntity.ok(body);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     @PostMapping(value = "/{userId}/changeAccountType")
-    public Boolean changeAccountType(@PathVariable("userId") Long userId, @RequestParam("accounttype") AccountType accountType) {
-        return userService.changeAccountType(userId, accountType);
+    public ResponseEntity changeAccountType(@PathVariable("userId") Long userId, @RequestParam("accounttype") AccountType accountType) {
+        try {
+            userService.changeAccountType(userId, accountType);
+            HashMap<String, String> body = new HashMap<>();
+            body.put("accountType", accountType.toString());
+            return ResponseEntity.ok(body);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     @GetMapping("/formalitytexts")
