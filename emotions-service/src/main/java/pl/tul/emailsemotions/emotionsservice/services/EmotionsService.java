@@ -16,8 +16,10 @@ public class EmotionsService {
     private final TextService textService;
 
     public EmotionsResult recognizeFormality(Text text) {
+        textService.add(text);
         EmotionsResult result = EmotionsResult
             .builder()
+            .textId(text.getId())
             .angry(0.2)
             .fear(0.3)
             .happy(0.2)
@@ -25,7 +27,6 @@ public class EmotionsService {
             .surprise(0.3)
             .build();
         text.addEmotionsResult(result);
-        textService.add(text);
         emotionsResultRepository.save(result);
         return result;
     }

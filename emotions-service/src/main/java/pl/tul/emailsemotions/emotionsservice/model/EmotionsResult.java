@@ -18,6 +18,9 @@ public class EmotionsResult {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "text_id")
+    private Long textId;
+
     @Column(name = "angry")
     private Double angry;
 
