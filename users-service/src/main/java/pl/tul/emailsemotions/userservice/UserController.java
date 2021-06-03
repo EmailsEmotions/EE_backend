@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class UserResource {
+public class UserController {
 
     private final UserService userService;
     private final FormalityClient formalityClient;
