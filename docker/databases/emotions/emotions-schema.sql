@@ -4,6 +4,7 @@ USE emotions;
 
 CREATE TABLE IF NOT EXISTS texts (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED,
     text TEXT
 ) engine=InnoDB;
 
