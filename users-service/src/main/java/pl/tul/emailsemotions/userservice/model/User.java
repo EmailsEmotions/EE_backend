@@ -19,18 +19,16 @@ import java.sql.Date;
 @Table(name = "users")
 public class User {
     @Id
-    @NotNull
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(lombok.AccessLevel.NONE)
     private Long id;
 
-    @Column(name = "username",unique = true)
+    @Column(name = "username")
     @NotNull
     private String username;
 
     @Pattern(regexp = Utilities.EMAIL_REGEX)
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     @NotNull
     private String email;
 
