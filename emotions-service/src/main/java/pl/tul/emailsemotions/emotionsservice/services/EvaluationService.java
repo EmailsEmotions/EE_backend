@@ -8,17 +8,20 @@ import pl.tul.emailsemotions.emotionsservice.model.EmotionsEvaluation;
 import pl.tul.emailsemotions.emotionsservice.model.Text;
 import pl.tul.emailsemotions.emotionsservice.repositories.EmotionsEvaluationRepository;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Slf4j
 public class EvaluationService {
     private final EmotionsEvaluationRepository emotionsEvaluationRepository;
-    private final TextService textService;
 
     public EmotionsEvaluation add(EmotionsEvaluation emotionsEvaluation) throws NotFoundException {
         emotionsEvaluationRepository.save(emotionsEvaluation);
-        Text text = textService.get(emotionsEvaluation.getTextId());
-        text.addEmotionsEvaluation(emotionsEvaluation);
         return emotionsEvaluation;
+    }
+
+    public List<EmotionsEvaluation> getAllByTextId(Long textId) {
+        return emotionsEvaluationRepository.findAllByTextId(textId);
     }
 }

@@ -4,6 +4,8 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.tul.emailsemotions.formalityservice.model.FormalityEvaluation;
+import pl.tul.emailsemotions.formalityservice.model.FormalityResult;
 import pl.tul.emailsemotions.formalityservice.model.Text;
 import pl.tul.emailsemotions.formalityservice.repositories.TextRepository;
 
@@ -29,5 +31,9 @@ public class TextService {
 
     public Text add(Text text) {
         return textRepository.save(text);
+    }
+
+    public List<Text> getAllByUserId(Long userId) {
+        return textRepository.findAllByUserId(userId);
     }
 }
