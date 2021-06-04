@@ -7,6 +7,8 @@ import pl.tul.emailsemotions.emotionsservice.model.EmotionsResult;
 import pl.tul.emailsemotions.emotionsservice.model.Text;
 import pl.tul.emailsemotions.emotionsservice.repositories.EmotionsResultRepository;
 
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -29,5 +31,9 @@ public class EmotionsService {
         text.addEmotionsResult(result);
         emotionsResultRepository.save(result);
         return result;
+    }
+
+    public List<EmotionsResult> getAllByTextId(Long textId) {
+        return emotionsResultRepository.findAllByTextId(textId);
     }
 }

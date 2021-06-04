@@ -30,4 +30,8 @@ public class TextService {
     public Text add(Text text) {
         return textRepository.save(text);
     }
+
+    public List<Text> getAllByUserId(Long userId) {
+        return textRepository.findAllByUserId(userId);
+    }
 }
