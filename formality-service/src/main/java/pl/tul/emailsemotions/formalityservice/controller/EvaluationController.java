@@ -27,6 +27,12 @@ public class EvaluationController {
         }
     }
 
+    @GetMapping("/evaluations/{userId}")
+    @ResponseBody
+    public ResponseEntity getAllByUserId(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(evaluationService.getAllByUserId(userId));
+    }
+
     @GetMapping(value = "/user/{userId}")
     public User findUser(@PathVariable("userId") Long userId) {
         return userClient.getUser(userId);

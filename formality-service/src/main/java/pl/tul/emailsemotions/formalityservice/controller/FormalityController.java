@@ -17,4 +17,10 @@ public class FormalityController {
     public ResponseEntity recognizeFormality(@RequestBody Text text) {
         return ResponseEntity.ok(formalityService.recognizeFormality(text));
     }
+
+    @GetMapping("/recognitions/{userId}")
+    @ResponseBody
+    public ResponseEntity getAllByUserId(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(formalityService.getAllByUserId(userId));
+    }
 }
