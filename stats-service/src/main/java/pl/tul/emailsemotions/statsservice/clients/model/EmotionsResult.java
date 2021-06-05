@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormalityResult implements Formalitable {
-    private Double formality;
-    private Double informality;
+public class EmotionsResult implements Emotionable {
+    private Double angry;
+    private Double fear;
+    private Double happy;
+    private Double sad;
+    private Double surprise;
 }

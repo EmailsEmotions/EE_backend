@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class FormalityStatistics {
     private Integer numberOfRecognitions;
     private Integer numberOfEvaluations;
+
     private Double averageRecognitionFormality;
     private Double averageRecognitionInformality;
+
     private Double averageEvaluationFormality;
     private Double averageEvaluationInformality;
 }

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormalityEvaluation {
-    private Double formality;
-    private Double informality;
+public class FormalityEvaluation implements Formalitable {
+    private Integer formality;
+    private Integer informality;
 }
 
