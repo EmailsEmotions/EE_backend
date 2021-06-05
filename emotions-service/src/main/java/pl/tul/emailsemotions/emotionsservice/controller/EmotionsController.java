@@ -17,4 +17,10 @@ public class EmotionsController {
     public ResponseEntity recognizeEmotions(@RequestBody Text text) {
         return ResponseEntity.ok(emotionsService.recognizeFormality(text));
     }
+
+    @GetMapping("/recognitions/{userId}")
+    @ResponseBody
+    public ResponseEntity getAllByUserId(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(emotionsService.getAllByUserId(userId));
+    }
 }

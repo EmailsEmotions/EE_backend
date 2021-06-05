@@ -7,6 +7,7 @@ import pl.tul.emailsemotions.emotionsservice.model.EmotionsResult;
 import pl.tul.emailsemotions.emotionsservice.model.Text;
 import pl.tul.emailsemotions.emotionsservice.repositories.EmotionsResultRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -35,5 +36,14 @@ public class EmotionsService {
 
     public List<EmotionsResult> getAllByTextId(Long textId) {
         return emotionsResultRepository.findAllByTextId(textId);
+    }
+
+    public List<EmotionsResult> getAllByUserId(Long userId) {
+        List<Text> texts = textService.getAllByUserId(userId);
+        List<EmotionsResult> emotionsResults = new LinkedList<>();
+        for (Text text : texts) {
+            emotionsResults.addAll(getAllByTextId(text.getId()));
+        }
+        return emotionsResults;
     }
 }

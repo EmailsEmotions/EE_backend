@@ -8,6 +8,7 @@ import pl.tul.emailsemotions.formalityservice.model.FormalityResult;
 import pl.tul.emailsemotions.formalityservice.model.Text;
 import pl.tul.emailsemotions.formalityservice.repositories.FormalityResultRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -32,5 +33,14 @@ public class FormalityService {
 
     public List<FormalityResult> getAllByTextId(Long textId) {
         return formalityResultRepository.findAllByTextId(textId);
+    }
+
+    public List<FormalityResult> getAllByUserId(Long userId) {
+        List<Text> texts = textService.getAllByUserId(userId);
+        List<FormalityResult> formalityResults = new LinkedList<>();
+        for (Text text : texts) {
+            formalityResults.addAll(getAllByTextId(text.getId()));
+        }
+        return formalityResults;
     }
 }

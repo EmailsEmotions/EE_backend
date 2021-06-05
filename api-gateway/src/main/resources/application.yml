@@ -21,3 +21,9 @@ spring:
             - Path=/api/emotions/**
           filters:
             - StripPrefix=2
+        - id: stats-service
+          uri: lb://stats-service
+          predicates:
+            - Path=/api/stats/**
+          filters:
+            - StripPrefix=2

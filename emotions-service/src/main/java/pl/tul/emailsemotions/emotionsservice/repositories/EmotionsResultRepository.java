@@ -8,4 +8,3 @@ import java.util.List;
 public interface EmotionsResultRepository extends JpaRepository<EmotionsResult, Long> {
     List<EmotionsResult> findAllByTextId(Long id);
 }
-
