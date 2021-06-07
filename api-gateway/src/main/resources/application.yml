@@ -27,3 +27,9 @@ spring:
             - Path=/api/stats/**
           filters:
             - StripPrefix=2
+        - id: email-service
+            uri: lb://email-service
+            predicates:
+              - Path=/api/email/**
+            filters:
+              - StripPrefix=2
