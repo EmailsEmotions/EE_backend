@@ -24,6 +24,7 @@
         <module>users-service</module>
         <module>formality-service</module>
         <module>emotions-service</module>
+        <module>stats-service</module>
     </modules>
 
 	<properties>
