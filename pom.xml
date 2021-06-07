@@ -25,6 +25,7 @@
         <module>formality-service</module>
         <module>emotions-service</module>
         <module>stats-service</module>
+        <module>email-service</module>
     </modules>
 
 	<properties>
