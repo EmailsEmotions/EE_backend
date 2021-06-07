@@ -2,7 +2,6 @@ spring:
   cloud:
     gateway:
       routes:
-#        - id: ee_backend_users-service_*
         - id: users-service
           uri: lb://users-service
           predicates:
@@ -28,8 +27,8 @@ spring:
           filters:
             - StripPrefix=2
         - id: email-service
-            uri: lb://email-service
-            predicates:
-              - Path=/api/email/**
-            filters:
-              - StripPrefix=2
+          uri: lb://email-service
+          predicates:
+            - Path=/api/email/**
+          filters:
+            - StripPrefix=2

@@ -1,0 +1,30 @@
+FROM openjdk:11-jre as builder
+WORKDIR application
+COPY target/emotions-service-0.0.1-SNAPSHOT.jar application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+# Download dockerize and cache that layer
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget -O dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+RUN tar xzf dockerize.tar.gz
+RUN chmod +x dockerize
+
+# wget is not installed on adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk:11-jre-hotspot
+
+WORKDIR application
+
+# Dockerize
+COPY --from=builder application/dockerize ./
+
+# Expose ports
+ARG EXPOSED_PORT
+EXPOSE ${EXPOSED_PORT}
+# Set spring profile to docker
+ENV SPRING_PROFILES_ACTIVE docker
+
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
