@@ -1,8 +1,6 @@
-package pl.tul.emailsemotions.userservice.clientModels.emotions;
+package pl.tul.emailsemotions.userservice.clients.models.emotions;
 
 import lombok.*;
-
-import javax.persistence.Column;
 
 @Data
 @NoArgsConstructor

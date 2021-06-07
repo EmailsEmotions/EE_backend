@@ -1,8 +1,6 @@
-package pl.tul.emailsemotions.userservice.clientModels.formality;
+package pl.tul.emailsemotions.userservice.clients.models.formality;
 
 import lombok.*;
-
-import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
