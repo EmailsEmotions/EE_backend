@@ -309,3 +309,6 @@ https://nickjanetakis.com/blog/docker-tip-45-docker-compose-stop-vs-down
 JPA Column configuration problems: https://stackoverflow.com/questions/25283198/spring-boot-jpa-column-name-annotation-ignored
 
 Just rename all your `@Column` to lowercase 
+
+# Email
+Email is setup for `emailsemotions@gmail.com`
