@@ -104,4 +104,17 @@ public class UserController {
             formalityClient.getAllBase().stream())
             .collect(Collectors.toList());
     }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+        try {
+            Boolean isLogged = userService.login(loginDTO);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                Map.of("error", ex.getMessage()));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+            Map.of("logged", "ok"));
+    }
 }

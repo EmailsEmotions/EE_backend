@@ -83,4 +83,23 @@ public class UserService {
         }
     }
 
+    public Boolean login(LoginDTO loginDTO) {
+        User user;
+        String username = loginDTO.getUserName();
+        try {
+            user = this.findByUsername(username);
+        }   catch (EntityNotFoundException ex) {
+            log.error("User with username: " + username + " not found.");
+            throw new EntityNotFoundException();
+        }
+        if(user.getPassword().equals(loginDTO.getPassword())) {
+            log.info("User "+username+" logged in");
+            return true;
+        } else {
+            log.info("User "+username+": wrong password");
+            return false;
+        }
+    }
+
+
 }
