@@ -5,17 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.tul.emailsemotions.userservice.clientModels.BaseText;
-import pl.tul.emailsemotions.userservice.clientModels.emotions.EmotionsText;
-import pl.tul.emailsemotions.userservice.clientModels.formality.FormalityText;
+import pl.tul.emailsemotions.userservice.clients.models.BaseText;
+import pl.tul.emailsemotions.userservice.clients.models.emotions.EmotionsText;
+import pl.tul.emailsemotions.userservice.clients.models.formality.FormalityText;
 import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
 import pl.tul.emailsemotions.userservice.clients.FormalityClient;
+import pl.tul.emailsemotions.userservice.dto.LoginDTO;
 import pl.tul.emailsemotions.userservice.model.AccountType;
 import pl.tul.emailsemotions.userservice.model.User;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,7 +58,7 @@ public class UserController {
             body.put("active", "true");
             return ResponseEntity.ok(body);
         } catch (EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
         }
     }
 
@@ -68,7 +70,7 @@ public class UserController {
             body.put("active", "false");
             return ResponseEntity.ok(body);
         } catch (EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
         }
     }
 
@@ -80,7 +82,19 @@ public class UserController {
             body.put("accountType", accountType.toString());
             return ResponseEntity.ok(body);
         } catch (EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+        }
+    }
+
+    @GetMapping(value = "/{userId}/confirmAccount")
+    public ResponseEntity confirmAccount(@PathVariable("userId") Long userId) {
+        try {
+            userService.changeConfirmedStatus(userId, true);
+            HashMap<String, String> body = new HashMap<>();
+            body.put("confirmed", "true");
+            return ResponseEntity.ok(body);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
         }
     }
 
@@ -103,5 +117,18 @@ public class UserController {
             emotionsClient.getAllBase().stream(),
             formalityClient.getAllBase().stream())
             .collect(Collectors.toList());
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+        try {
+            Boolean isLogged = userService.login(loginDTO);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                Map.of("error", ex.getMessage()));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+            Map.of("logged", "ok"));
     }
 }

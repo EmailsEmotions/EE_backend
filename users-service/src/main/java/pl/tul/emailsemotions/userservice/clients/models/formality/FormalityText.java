@@ -1,9 +1,9 @@
-package pl.tul.emailsemotions.userservice.clientModels.formality;
+package pl.tul.emailsemotions.userservice.clients.models.formality;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.tul.emailsemotions.userservice.clientModels.BaseText;
+import pl.tul.emailsemotions.userservice.clients.models.BaseText;
 
 import java.util.LinkedList;
 import java.util.List;

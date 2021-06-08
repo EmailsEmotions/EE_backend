@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.userservice.clientModels;
+package pl.tul.emailsemotions.userservice.clients.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
