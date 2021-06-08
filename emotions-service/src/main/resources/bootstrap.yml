@@ -4,6 +4,10 @@ spring:
       uri: http://localhost:8888
   application:
     name: emotions-service
+  datasource:
+    url: jdbc:mysql://localhost:3307/emotions?useSSL=false
+    username: user
+    password: emailsemotions
 ---
 spring:
   config:
