@@ -7,6 +7,10 @@ spring:
   level:
     org.springframework: WARN
     org.hibernate: WARN
+  datasource:
+    url: jdbc:mysql://localhost:3308/users?useSSL=false
+    username: user
+    password: emailsemotions
 spring.logstash:
   server: localhost
   port: 5000

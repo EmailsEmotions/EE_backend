@@ -2,6 +2,9 @@ package pl.tul.emailsemotions.userservice;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pl.tul.emailsemotions.userservice.clients.MailClient;
 import pl.tul.emailsemotions.userservice.clients.models.MailObject;
@@ -20,15 +23,24 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final MailClient mailClient;
+
+    @Autowired()
+    private Environment env;
+
     public User add(User user) {
-        log.info("Adding user to database: " + user.toString());
         User userdb = userRepository.save(user);
-        sendActivationMail(userdb);
+        log.info("Added user to database: " + userdb);
+        String mailEnabled = env.getProperty("mail.enabled");
+        log.info(mailEnabled);
+
+        if (Boolean.getBoolean(mailEnabled)) {
+            sendActivationMail(userdb);
+        }
         return userdb;
     }
 
     private void sendActivationMail(User userdb) {
-        HashMap<String,String> templateMap = new HashMap<String,String>();
+        HashMap<String,String> templateMap = new HashMap<>();
         templateMap.put("header","Rejestracja w systemie EE");
         templateMap.put("title","Witamy w systemie EmailsEmotions");
         templateMap.put("description",
