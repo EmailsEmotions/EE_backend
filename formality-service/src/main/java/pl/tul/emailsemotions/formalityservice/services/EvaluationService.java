@@ -20,15 +20,18 @@ public class EvaluationService {
     private final TextService textService;
 
     public FormalityEvaluation add(FormalityEvaluation formalityEvaluation) throws NotFoundException {
+        log.info("Adding formality evaluation");
         formalityEvaluationRepository.save(formalityEvaluation);
         return formalityEvaluation;
     }
 
     public List<FormalityEvaluation> getAllByTextId(Long textId) {
+        log.info("Looking for formality evaluation with id "+textId);
         return formalityEvaluationRepository.findAllByTextId(textId);
     }
 
     public List<FormalityEvaluation> getAllByUserId(Long userId) {
+        log.info("Looking for formality evaluations for user with id "+userId);
         List<Text> texts = textService.getAllByUserId(userId);
         List<FormalityEvaluation> formalityEvaluations = new LinkedList<>();
         for (Text text : texts) {

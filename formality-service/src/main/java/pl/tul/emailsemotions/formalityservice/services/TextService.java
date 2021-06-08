@@ -26,14 +26,17 @@ public class TextService {
     }
 
     public List<Text> getAll() {
+        log.info("Getting all texts");
         return textRepository.findAll();
     }
 
     public Text add(Text text) {
+        log.info("Adding text to database:" +text);
         return textRepository.save(text);
     }
 
     public List<Text> getAllByUserId(Long userId) {
+        log.info("Getting all texts by userId "+userId);
         return textRepository.findAllByUserId(userId);
     }
 }

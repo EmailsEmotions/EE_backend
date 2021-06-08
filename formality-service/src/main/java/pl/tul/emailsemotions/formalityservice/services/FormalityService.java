@@ -19,6 +19,7 @@ public class FormalityService {
     private final TextService textService;
 
     public FormalityResult recognizeFormality(Text text) {
+        log.info("Recognizing formality...");
         textService.add(text);
         FormalityResult result = FormalityResult
             .builder()
@@ -32,10 +33,12 @@ public class FormalityService {
     }
 
     public List<FormalityResult> getAllByTextId(Long textId) {
+        log.info("Looking for formality results for text with id "+textId);
         return formalityResultRepository.findAllByTextId(textId);
     }
 
     public List<FormalityResult> getAllByUserId(Long userId) {
+        log.info("Looking for formality results for user with id "+userId);
         List<Text> texts = textService.getAllByUserId(userId);
         List<FormalityResult> formalityResults = new LinkedList<>();
         for (Text text : texts) {
