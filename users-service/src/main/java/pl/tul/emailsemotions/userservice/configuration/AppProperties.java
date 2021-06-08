@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.userservice;
+package pl.tul.emailsemotions.userservice.configuration;
 
 import org.springframework.context.annotation.Configuration;
 

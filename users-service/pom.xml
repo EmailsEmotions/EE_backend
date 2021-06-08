@@ -82,6 +82,12 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>6.4</version>
         </dependency>
+<!--        Swagger-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
         <!--        <dependency>-->
 <!--            <groupId>de.codecentric</groupId>-->
 <!--            <artifactId>spring-boot-admin-starter-client</artifactId>-->

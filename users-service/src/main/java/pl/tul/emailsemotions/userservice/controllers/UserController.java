@@ -1,10 +1,11 @@
-package pl.tul.emailsemotions.userservice;
+package pl.tul.emailsemotions.userservice.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.tul.emailsemotions.userservice.services.UserService;
 import pl.tul.emailsemotions.userservice.clients.models.BaseText;
 import pl.tul.emailsemotions.userservice.clients.models.emotions.EmotionsText;
 import pl.tul.emailsemotions.userservice.clients.models.formality.FormalityText;
@@ -30,7 +31,7 @@ public class UserController {
     private final FormalityClient formalityClient;
     private final EmotionsClient emotionsClient;
 
-    @GetMapping
+    @GetMapping(value = "/getAll")
     public List<User> findAll() {
         return userService.getAll();
     }
