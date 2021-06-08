@@ -19,6 +19,7 @@ public class EmotionsService {
     private final TextService textService;
 
     public EmotionsResult recognizeFormality(Text text) {
+        log.info("Recognizing emotions...");
         textService.add(text);
         EmotionsResult result = EmotionsResult
             .builder()
@@ -35,10 +36,12 @@ public class EmotionsService {
     }
 
     public List<EmotionsResult> getAllByTextId(Long textId) {
+        log.info("Looking for emotions results for text with id "+textId);
         return emotionsResultRepository.findAllByTextId(textId);
     }
 
     public List<EmotionsResult> getAllByUserId(Long userId) {
+        log.info("Looking for emotions results for user with id "+userId);
         List<Text> texts = textService.getAllByUserId(userId);
         List<EmotionsResult> emotionsResults = new LinkedList<>();
         for (Text text : texts) {
