@@ -22,6 +22,7 @@ public class FormalityStatisticsService {
     private final FormalityClient formalityClient;
 
     public FormalityStatistics calculateFormalityStatistics(Long userId) {
+        log.info("Calculating formality statistics for user "+userId);
         List<FormalityResult> formalityResults = formalityClient.getAllFormalityResults(userId);
         List<FormalityEvaluation> formalityEvaluations = formalityClient.getAllFormalityEvaluations(userId);
 
