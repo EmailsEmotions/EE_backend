@@ -18,7 +18,7 @@ public class HistoryService {
     private final FormalityService formalityService;
 
     public List<Text> getUserHistory(Long userId) {
-
+        log.info("Getting history for userId "+userId);
         List<Text> texts = textService.getAllByUserId(userId);
         for (Text text: texts) {
             List<FormalityResult> formalityResults =

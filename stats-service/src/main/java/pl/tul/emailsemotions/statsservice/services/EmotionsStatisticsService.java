@@ -22,6 +22,7 @@ public class EmotionsStatisticsService {
     private final EmotionsClient emotionsClient;
 
     public EmotionsStatistics calculateEmotionsStatistics(Long userId) {
+        log.info("Calculating emotions statistics for user "+userId);
         List<EmotionsResult> emotionsResults = emotionsClient.getAllEmotionsResults(userId);
         List<EmotionsEvaluation> emotionsEvaluations = emotionsClient.getAllEmotionsEvaluations(userId);
 

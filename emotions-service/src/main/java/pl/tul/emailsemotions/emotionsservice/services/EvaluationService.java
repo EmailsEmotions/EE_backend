@@ -19,15 +19,18 @@ public class EvaluationService {
     private final TextService textService;
 
     public EmotionsEvaluation add(EmotionsEvaluation emotionsEvaluation) throws NotFoundException {
+        log.info("Adding emotions evaluation");
         emotionsEvaluationRepository.save(emotionsEvaluation);
         return emotionsEvaluation;
     }
 
     public List<EmotionsEvaluation> getAllByTextId(Long textId) {
+        log.info("Looking for emotions evaluation with id "+textId);
         return emotionsEvaluationRepository.findAllByTextId(textId);
     }
 
     public List<EmotionsEvaluation> getAllByUserId(Long userId) {
+        log.info("Looking for emotions evaluations for user with id "+userId);
         List<Text> texts = textService.getAllByUserId(userId);
         List<EmotionsEvaluation> emotionsEvaluations = new LinkedList<>();
         for (Text text : texts) {
