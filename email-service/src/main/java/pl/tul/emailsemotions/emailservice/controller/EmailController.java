@@ -32,6 +32,7 @@ public class EmailController {
 
     @PostMapping("/previewMailHtml")
     public String showHtml(@RequestBody MailObject mailObject) {
+        log.info("Previewing mail html...");
         if (!emailSender.verifyMailMinimalMap(mailObject)) {
             String msg = "Cannot preview mail, critical information is missing";
             log.error(msg);
