@@ -5,6 +5,9 @@ spring:
       uri: http://localhost:8888
   application:
     name: discovery-server
+spring.logstash:
+  server: localhost
+  port: 5000
 ---
 spring:
   config:
@@ -13,3 +16,6 @@ spring:
   cloud:
     config:
       uri: http://config-server:8888
+spring.logstash:
+  server: logstash-service
+  port: 5000
