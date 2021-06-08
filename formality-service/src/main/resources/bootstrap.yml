@@ -4,6 +4,10 @@ spring:
       uri: http://localhost:8888
   application:
     name: formality-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/formality?useSSL=false
+    username: user
+    password: emailsemotions
 ---
 spring:
   config:
