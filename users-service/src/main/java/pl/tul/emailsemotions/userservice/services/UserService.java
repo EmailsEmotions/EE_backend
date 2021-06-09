@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pl.tul.emailsemotions.userservice.clients.MailClient;
 import pl.tul.emailsemotions.userservice.clients.models.MailObject;
+import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
 import pl.tul.emailsemotions.userservice.dto.LoginDTO;
 import pl.tul.emailsemotions.userservice.model.AccountType;
 import pl.tul.emailsemotions.userservice.model.User;
@@ -27,8 +28,17 @@ public class UserService {
     @Autowired()
     private Environment env;
 
-    public User add(User user) {
-        User userdb = userRepository.save(user);
+    public User add(AddUserDTO user) {
+        User userToSaveInDB = User.builder()
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .email(user.getEmail())
+            .accountType(AccountType.STANDARD)
+            .active(true)
+            .confirmed(false)
+            .canAdmin(false)
+            .build();
+        User userdb = userRepository.save(userToSaveInDB);
         log.info("Added user to database: " + userdb);
         String mailEnabled = env.getProperty("mail.enabled");
         log.info(mailEnabled);
@@ -115,7 +125,7 @@ public class UserService {
 
     public Boolean login(LoginDTO loginDTO) {
         User user;
-        String username = loginDTO.getUserName();
+        String username = loginDTO.getUsername();
         try {
             user = this.findByUsername(username);
         }   catch (EntityNotFoundException ex) {
