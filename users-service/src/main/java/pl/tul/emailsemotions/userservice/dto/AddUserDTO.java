@@ -10,7 +10,9 @@ import javax.validation.constraints.Pattern;
 @Data
 @AllArgsConstructor
 @Builder
-public class LoginDTO {
+public class AddUserDTO {
     private String username;
+    @Pattern(regexp = Utilities.EMAIL_REGEX)
+    private String email;
     private String password;
 }

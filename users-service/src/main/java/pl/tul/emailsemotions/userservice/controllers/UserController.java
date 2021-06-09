@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
 import pl.tul.emailsemotions.userservice.services.UserService;
 import pl.tul.emailsemotions.userservice.clients.models.BaseText;
 import pl.tul.emailsemotions.userservice.clients.models.emotions.EmotionsText;
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity add(@RequestBody User user) {
+    public ResponseEntity add(@RequestBody AddUserDTO user) {
         return ResponseEntity.ok(userService.add(user));
     }
 
@@ -123,13 +124,14 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+        Boolean isLogged;
         try {
-            Boolean isLogged = userService.login(loginDTO);
+            isLogged = userService.login(loginDTO);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 Map.of("error", ex.getMessage()));
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-            Map.of("logged", "ok"));
+            Map.of("logged", isLogged));
     }
 }

@@ -1,9 +1,6 @@
 package pl.tul.emailsemotions.userservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.tul.emailsemotions.userservice.utils.Utilities;
 
 import javax.persistence.*;
@@ -13,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
