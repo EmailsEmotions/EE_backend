@@ -1,7 +1,6 @@
 package pl.tul.emailsemotions.emailservice;
 
 import org.springframework.context.annotation.Configuration;
-
 import javax.annotation.PostConstruct;
 import java.util.UUID;
 

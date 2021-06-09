@@ -1,0 +1,239 @@
+version: '3'
+services:
+  #  ElasticSearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: elasticsearch-service
+    hostname: elasticsearch-service
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    volumes:
+      - data-es:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      #      - cluster.initial_master_nodes=elasticsearch
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+  #        mem_limit: 500m
+  #        cap_add:
+  #          - IPC_LOCK
+  #    volumes:
+  #      - ./elasticsearch/data:/usr/share/elasticsearch/data:rw
+#  Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    container_name: kibana-service
+    hostname: kibana-service
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+  # Logstash
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.12.1
+    container_name: logstash-service
+    hostname: logstash-service
+    restart: unless-stopped
+    command: logstash -f /usr/share/logstash/pipeline
+    volumes:
+      - ./logstash-service/config:/usr/share/logstash/config:ro
+      - ./logstash-service/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - 5000:5000
+      - 12204:12204
+    depends_on:
+      - elasticsearch
+# Config server
+  config-server:
+    image: emails-emotions/config-server
+    container_name: config-server
+    hostname: config-server
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - logstash
+    ports:
+      - 8888:8888
+# Discovery server
+  discovery-server:
+    image: emails-emotions/discovery-server
+    container_name: discovery-server
+    hostname: discovery-server
+    build:
+        context: ./discovery-server
+        dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8761:8761
+    links:
+      - "logstash:logstash-service"
+# API gateway
+  api-gateway:
+    image: emails-emotions/api-gateway
+    container_name: api-gateway
+    hostname: api-gateway
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 8080:8080
+    links:
+      - "logstash:logstash-service"
+# Admin server
+  admin-server:
+    image: emails-emotions/admin-server
+    container_name: admin-server
+    hostname: admin-server
+    build:
+      context: ./admin-server
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    ports:
+      - 9090:9090
+    links:
+      - "logstash:logstash-service"
+# User service
+  users-service:
+    image: emails-emotions/users-service
+    hostname: users-service
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    links:
+      - "logstash:logstash-service"
+#    deploy:
+#      replicas: 3
+# Formality service
+  formality-service:
+    image: emails-emotions/formality-service
+    hostname: formality-service
+    build:
+      context: ./formality-service
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    links:
+      - "logstash:logstash-service"
+# Emotions service
+  emotions-service:
+    image: emails-emotions/emotions-service
+    hostname: emotions-service
+    build:
+      context: ./emotions-service
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    links:
+      - "logstash:logstash-service"
+# Stats service
+  stats-service:
+    image: emails-emotions/stats-service
+    hostname: stats-service
+    build:
+      context: ./stats-service
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+      - formality-service
+      - emotions-service
+      - users-service
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    links:
+      - "logstash:logstash-service"
+# Email service
+  email-service:
+    image: emails-emotions/email-service
+    hostname: email-service
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile-with-maven
+    mem_limit: 512M
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher" ]
+    links:
+      - "logstash:logstash-service"
+# Databases
+  db-formality:
+    image: mysql:5.7
+    container_name: db-formality
+    hostname: db-formality
+    environment:
+      MYSQL_DATABASE: 'formality'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3306:3306'
+    volumes:
+      - './docker/databases/formality:/docker-entrypoint-initdb.d'
+  db-emotions:
+    image: mysql:5.7
+    container_name: db-emotions
+    hostname: db-emotions
+    environment:
+      MYSQL_DATABASE: 'emotions'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3307:3306'
+    volumes:
+      - './docker/databases/emotions:/docker-entrypoint-initdb.d'
+  db-users:
+    image: mysql:5.7
+    container_name: db-users
+    hostname: db-users
+    environment:
+      MYSQL_DATABASE: 'users'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'emailsemotions'
+      MYSQL_ROOT_PASSWORD: 'emailsemotions'
+    ports:
+      - '3308:3306'
+    volumes:
+      - './docker/databases/users:/docker-entrypoint-initdb.d'
+volumes:
+  data-es:
