@@ -312,3 +312,17 @@ Just rename all your `@Column` to lowercase
 
 # Email
 Email is setup for `emailsemotions@gmail.com`
+
+# Swagger UI
+Swagger is on `service:port/swagger-ui/index.html`
+https://stackoverflow.com/questions/46151540/added-springfox-swagger-ui-and-its-not-working-what-am-i-missing
+https://stackoverflow.com/questions/32194250/unable-to-bring-up-swagger-ui-from-spring-boot-
+https://stackoverflow.com/questions/23767886/not-able-to-get-swagger-ui-with-spring-boot
+https://stackoverflow.com/questions/53453006/swagger-ui-html-page-not-working-springboot
+https://stackoverflow.com/questions/62845550/swagger-api-documentation-in-spring-api-gateway
+
+## TODO: Combining swagger
+https://blog.wick.technology/distributed-api-docs/
+https://stackoverflow.com/questions/48646068/how-can-i-aggregate-microservices-swaggers-into-a-single-swagger
+https://github.com/varghgeorge/microservices-single-swagger
+https://objectpartners.com/2017/09/28/aggregate-services-into-a-single-swagger/
