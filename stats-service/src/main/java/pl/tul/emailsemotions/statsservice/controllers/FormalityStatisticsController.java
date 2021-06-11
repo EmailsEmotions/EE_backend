@@ -12,7 +12,6 @@ public class FormalityStatisticsController {
 
     @GetMapping("/formality/{userId}")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity calculateFormalityStatistics(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(formalityStatisticsService.calculateFormalityStatistics(userId));
     }

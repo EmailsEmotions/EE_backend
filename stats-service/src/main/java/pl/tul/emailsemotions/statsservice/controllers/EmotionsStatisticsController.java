@@ -13,7 +13,6 @@ public class EmotionsStatisticsController {
 
     @GetMapping("/emotions/{userId}")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity calculateFormalityStatistics(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(emotionsStatisticsService.calculateEmotionsStatistics(userId));
     }

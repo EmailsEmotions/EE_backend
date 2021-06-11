@@ -13,7 +13,6 @@ public class EmotionsController {
 
     @PostMapping("/recognize")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity recognizeEmotions(@RequestBody Text text) {
         return ResponseEntity.ok(emotionsService.recognizeFormality(text));
     }

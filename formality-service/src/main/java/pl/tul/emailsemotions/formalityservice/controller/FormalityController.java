@@ -13,7 +13,6 @@ public class FormalityController {
 
     @PostMapping("/recognize")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity recognizeFormality(@RequestBody Text text) {
         return ResponseEntity.ok(formalityService.recognizeFormality(text));
     }

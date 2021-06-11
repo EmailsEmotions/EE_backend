@@ -19,7 +19,6 @@ public class EvaluationController {
 
     @PostMapping(value = "/evaluate")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity evaluateRecognition(@RequestBody EmotionsEvaluation emotionsEvaluation) {
         try {
             return ResponseEntity.ok(evaluationService.add(emotionsEvaluation));

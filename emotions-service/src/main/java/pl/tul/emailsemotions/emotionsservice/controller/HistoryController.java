@@ -12,7 +12,6 @@ public class HistoryController {
 
     @GetMapping(value = "/history/{userId}")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity getUserHistory(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(historyService.getUserHistory(userId));
     }

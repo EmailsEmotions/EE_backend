@@ -18,7 +18,6 @@ public class EvaluationController {
 
     @PostMapping(value = "/evaluate")
     @ResponseBody
-    @CrossOrigin(value = "*")
     public ResponseEntity evaluateRecognition(@RequestBody FormalityEvaluation formalityEvaluation) {
         try {
             return ResponseEntity.ok(evaluationService.add(formalityEvaluation));
