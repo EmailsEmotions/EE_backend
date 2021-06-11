@@ -28,6 +28,11 @@ public class UserService {
     @Autowired()
     private Environment env;
 
+    /**
+     * Method responsible for adding user into database
+     * @param user User to add
+     * @return User save into database
+     */
     public User add(AddUserDTO user) {
         User userToSaveInDB = User.builder()
             .username(user.getUsername())

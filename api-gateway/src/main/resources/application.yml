@@ -5,6 +5,12 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
       routes:
         - id: users-service
           uri: lb://users-service
