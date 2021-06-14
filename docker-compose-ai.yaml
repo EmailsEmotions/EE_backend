@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ai-service:
+    image: ai-docker:latest
+    ports:
+      - 5600:80
+    entrypoint: [ "./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=80"]
+#    depends_on:
+#      - discovery-server
