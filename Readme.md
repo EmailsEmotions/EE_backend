@@ -58,19 +58,31 @@ Windows
 ```commandline
 > setx DOCKER_BUILDKIT 1
 > setx COMPOSE_DOCKER_CLI_BUILD 1
-> docker-compose -f docker-compose-with-maven up --build -d
+> docker-compose -f docker-compose-with-maven.yaml up --build -d
+> docker-compose -f docker-compose.yaml up --build -d
+> docker-compose -f docker-compose.yaml up -f docker-compose-ai.yaml --build -d
 ```
 Linux
 ```shell
 $ export DOCKER_BUILDKIT=1 # or configure in daemon.json
 $ export COMPOSE_DOCKER_CLI_BUILD=1
-$ docker-compose -f docker-compose-with-maven up --build -d
+$ docker-compose -f docker-compose-with-maven.yaml up --build -d
+$ docker-compose -f docker-compose.yaml up --build -d
+$ docker-compose -f docker-compose.yaml up -f docker-compose-ai.yaml --build -d
 ```
 ## Git Flow Setup
 ```shell
 git flow init [Enter]x5
 ```
 More informations here https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+## AI-module
+To use AI module you have to clone `https://github.com/EmailsEmotions/EE_AI.git`
+
+And build image with tag ai-docker
+```shell
+docker build -t ai-docker .
+```
 
 # Additional informations
 
