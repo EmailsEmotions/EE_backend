@@ -3,6 +3,8 @@ package pl.tul.emailsemotions.formalityservice.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.tul.emailsemotions.formalityservice.clients.AIClient;
+import pl.tul.emailsemotions.formalityservice.clients.model.AIResult;
 import pl.tul.emailsemotions.formalityservice.model.FormalityEvaluation;
 import pl.tul.emailsemotions.formalityservice.model.FormalityResult;
 import pl.tul.emailsemotions.formalityservice.model.Text;
@@ -17,15 +19,17 @@ import java.util.List;
 public class FormalityService {
     private final FormalityResultRepository formalityResultRepository;
     private final TextService textService;
+    private final AIClient aiClient;
 
     public FormalityResult recognizeFormality(Text text) {
         log.info("Recognizing formality...");
         textService.add(text);
+        AIResult aiResult = getAiResult(text);
         FormalityResult result = FormalityResult
             .builder()
             .textId(text.getId())
-            .formality(0.2)
-            .informality(0.8)
+            .formality(aiResult.getFormal())
+            .informality(aiResult.getInformal())
             .build();
         text.addFormalityResult(result);
         formalityResultRepository.save(result);
@@ -45,5 +49,9 @@ public class FormalityService {
             formalityResults.addAll(getAllByTextId(text.getId()));
         }
         return formalityResults;
+    }
+    public AIResult getAiResult(Text text) {
+        AIResult airesult = aiClient.countFormal(text.getText());
+        return airesult;
     }
 }

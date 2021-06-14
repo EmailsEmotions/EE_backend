@@ -43,3 +43,9 @@ spring:
             - Path=/api/email/**
           filters:
             - StripPrefix=2
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/api/ai/**
+          filters:
+            - StripPrefix=2
