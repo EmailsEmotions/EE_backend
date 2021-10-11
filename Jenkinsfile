@@ -19,9 +19,7 @@ docker build -t config-server -f Dockerfile-with-maven .
 
   }
   environment {
-    registryCredentialSet = 'dockerhub-bjencz'
-    registryUri = 'http://172.18.0.20:5000'
-    dockerInstance = ''
+    registryUri = '172.18.0.20:5000'
     DOCKER_BUILDKIT = '1'
   }
 }
