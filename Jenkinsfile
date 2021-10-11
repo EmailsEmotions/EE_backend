@@ -16,6 +16,7 @@ pipeline {
           steps {
             withMaven() {
               sh 'cd api-gateway && mvn -B package -DskipTests'
+              archiveArtifacts 'config-server'
             }
 
           }
