@@ -95,7 +95,6 @@ pipeline {
     stage('Publish to registry') {
       parallel {
         stage('Config Server') {
-          agent any
           steps {
             pwd()
             sh '''pwd
@@ -114,7 +113,6 @@ docker push $registryUri/config-server:${BUILD_ID}
         }
 
         stage('API Gateway') {
-          agent any
           steps {
             sh 'cd api-gateway && docker build -t api-gateway -f Dockerfile .'
             sh '''cd api-gateway
@@ -125,7 +123,6 @@ docker push $registryUri/api-gateway:${BUILD_ID}
         }
 
         stage('Discovery Server') {
-          agent any
           steps {
             sh 'cd discovery-server && docker build -t discovery-server -f Dockerfile .'
             sh '''cd discovery-server
@@ -136,7 +133,6 @@ docker push $registryUri/discovery-server:${BUILD_ID}
         }
 
         stage('Admin Server') {
-          agent any
           steps {
             sh 'cd admin-server && docker build -t admin-server -f Dockerfile .'
             sh '''cd admin-server
@@ -147,7 +143,6 @@ docker push $registryUri/admin-server:${BUILD_ID}
         }
 
         stage('Email Service') {
-          agent any
           steps {
             sh 'cd email-service && docker build -t email-service -f Dockerfile .'
             sh '''cd email-service
@@ -158,7 +153,6 @@ docker push $registryUri/email-service:${BUILD_ID}
         }
 
         stage('Emotions Service') {
-          agent any
           steps {
             sh 'cd emotions-service && docker build -t emotions-service -f Dockerfile .'
             sh '''cd emotions-service
@@ -169,7 +163,6 @@ docker push $registryUri/emotions-service:${BUILD_ID}
         }
 
         stage('Stats Service') {
-          agent any
           steps {
             sh 'cd stats-service && docker build -t stats-service -f Dockerfile .'
             sh '''cd stats-service
@@ -180,7 +173,6 @@ docker push $registryUri/stats-service:${BUILD_ID}
         }
 
         stage('Users Service') {
-          agent any
           steps {
             sh 'cd users-service && docker build -t users-service -f Dockerfile .'
             sh '''cd users-service
