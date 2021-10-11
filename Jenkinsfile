@@ -33,7 +33,8 @@ pipeline {
       steps {
         echo 'Publishing image'
         script {
-          dockerInstance = docker.build(imageName)
+          def dockerfile = 'Dockerfile-with-mave'
+          configServer = docker.build('config-server', "-f ${dockerfile} ./config-server")
         }
 
         script {
