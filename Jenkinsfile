@@ -5,18 +5,11 @@ pipeline {
       agent any
       steps {
         echo 'Publishing image'
-        script {
-          def dockerfile = 'Dockerfile-with-maven'
-          configServer = docker.build('config-server', "-f ${dockerfile} ./config-server")
-        }
-
-        script {
-          docker.withRegistry(registryUri) {
-            configServer.push("${env.BUILD_NUMBER}")
-            configServer.push("latest")
-          }
-        }
-
+        sh '''cd config-server
+docker build -t config-server -f Dockerfile-with-maven .
+docker tag config-server localhost:5000/config-server
+docker push 172.18.0.20:5000/config-server
+'''
       }
     }
 
