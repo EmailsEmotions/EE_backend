@@ -6,7 +6,7 @@ pipeline {
         withMaven(jdk: 'Java', maven: 'maven') {
           echo 'Building Config Server'
           sh '''cd config-server &&
-mvn clean install -Dlicense.skip=true'''
+mvn clean install -Dmaven.test.skip=true'''
         }
 
       }
