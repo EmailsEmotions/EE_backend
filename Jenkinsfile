@@ -14,4 +14,7 @@ pipeline {
     }
 
   }
+  environment {
+    DOCKER_BUILDKIT = '1'
+  }
 }
