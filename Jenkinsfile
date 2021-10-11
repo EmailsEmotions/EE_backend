@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build Config Server') {
       steps {
-        withMaven() {
+        withMaven(maven: 'maven-auto', jdk: 'Java') {
           sh 'cd config-server && mvn -B package -DskipTests'
         }
 
