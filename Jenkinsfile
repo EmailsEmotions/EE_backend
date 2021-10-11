@@ -20,8 +20,11 @@ mvn clean install -Dmaven.test.skip=true'''
 
     stage('SonarV2') {
       steps {
-        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins-sonar') {
-          sh 'cd config-server && mvn clean package sonar:sonar'
+        withMaven(jdk: 'Java', maven: 'maven') {
+          withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins-sonar') {
+            sh 'cd config-server && mvn clean package sonar:sonar'
+          }
+
         }
 
       }
