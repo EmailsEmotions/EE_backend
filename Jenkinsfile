@@ -90,7 +90,7 @@ pipeline {
         stage('Config Server') {
           agent any
           steps {
-            sh 'cd config-server && docker build -t config-server -f Dockerfile .'
+            sh 'docker build -t config-server -f ./config-server/Dockerfile .'
             sh '''cd config-server
 docker tag config-server $registryUri/config-server:${BUILD_ID}
 docker push $registryUri/config-server:${BUILD_ID}
@@ -190,6 +190,5 @@ docker push $registryUri/users-service:${BUILD_ID}
   }
   environment {
     registryUri = '172.18.0.20:5000'
-    DOCKER_BUILDKIT = '1'
   }
 }
