@@ -81,32 +81,6 @@ pipeline {
           }
         }
 
-        stage('Build Formality Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
-          steps {
-            sh 'cd formality-service && mvn -B package -DskipTests'
-          }
-        }
-
-        stage('Build Logstash Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
-          steps {
-            sh 'cd logstash-service && mvn -B package -DskipTests'
-          }
-        }
-
         stage('Build Stats Service') {
           agent {
             docker {
@@ -145,7 +119,7 @@ pipeline {
 
     stage('Publish to registry') {
       parallel {
-        stage('ConfigServer') {
+        stage('Config Server') {
           agent any
           steps {
             sh '''cd config-server 
@@ -157,7 +131,7 @@ docker push $registryUri/config-server:${BUILD_ID}
           }
         }
 
-        stage('Build API Gateway') {
+        stage('API Gateway') {
           agent any
           steps {
             sh '''cd api-gateway 
@@ -169,7 +143,7 @@ docker push $registryUri/api-gateway:${BUILD_ID}
           }
         }
 
-        stage('Build Discovery Server') {
+        stage('Discovery Server') {
           agent any
           steps {
             sh '''cd discovery-server 
@@ -181,7 +155,7 @@ docker push $registryUri/discovery-server:${BUILD_ID}
           }
         }
 
-        stage('Build Admin Server') {
+        stage('Admin Server') {
           agent any
           steps {
             sh '''cd admin-server 
@@ -193,7 +167,7 @@ docker push $registryUri/admin-server:${BUILD_ID}
           }
         }
 
-        stage('Build Email Service') {
+        stage('Email Service') {
           agent any
           steps {
             sh '''cd email-service 
@@ -205,7 +179,7 @@ docker push $registryUri/email-service:${BUILD_ID}
           }
         }
 
-        stage('Build Emotions Service') {
+        stage('Emotions Service') {
           agent any
           steps {
             sh '''cd emotions-service 
@@ -217,31 +191,7 @@ docker push $registryUri/emotions-service:${BUILD_ID}
           }
         }
 
-        stage('Build Formality Service') {
-          agent any
-          steps {
-            sh '''cd formality-service 
-docker build -t formality-service -f Dockerfile-with-maven .'''
-            sh '''cd formality-service
-docker tag formality-service $registryUri/formality-service:${BUILD_ID}
-docker push $registryUri/formality-service:${BUILD_ID}
-'''
-          }
-        }
-
-        stage('Build Logstash Service') {
-          agent any
-          steps {
-            sh '''cd logstash-service 
-docker build -t logstash-service -f Dockerfile-with-maven .'''
-            sh '''cd logstash-service
-docker tag logstash-service $registryUri/logstash-service:${BUILD_ID}
-docker push $registryUri/logstash-service:${BUILD_ID}
-'''
-          }
-        }
-
-        stage('Build Stats Service') {
+        stage('Stats Service') {
           agent any
           steps {
             sh '''cd stats-service 
@@ -253,7 +203,7 @@ docker push $registryUri/stats-service:${BUILD_ID}
           }
         }
 
-        stage('Build Users Service') {
+        stage('Users Service') {
           agent any
           steps {
             sh '''cd users-service 
@@ -268,9 +218,9 @@ docker push $registryUri/users-service:${BUILD_ID}
       }
     }
 
-    stage('End') {
+    stage('Finish') {
       steps {
-        echo 'Done publishing'
+        echo 'Finished publishing'
       }
     }
 
