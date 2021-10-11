@@ -1,66 +1,12 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
-      parallel {
-        stage('Build Config Server') {
-          steps {
-            withMaven() {
-              echo 'Building Config Server'
-              sh '''cd config-server
+    stage('Build Config Server') {
+      steps {
+        withMaven(jdk: 'Java', maven: 'maven') {
+          echo 'Building Config Server'
+          sh '''cd config-server &&
 mvn clean install -Dlicense.skip=true'''
-            }
-
-          }
-        }
-
-        stage('Build Discovery Server') {
-          steps {
-            sh '''cd discovery-server
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build API Gateway') {
-          steps {
-            sh '''cd api-gateway
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build Admin Server') {
-          steps {
-            sh '''cd admin-server
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build User Service') {
-          steps {
-            sh '''cd users-service
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build Emotions Service') {
-          steps {
-            sh '''cd emotions-service
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build Stats Service') {
-          steps {
-            sh '''cd stats-service
-mvn clean install -Dlicense.skip=true'''
-          }
-        }
-
-        stage('Build Email Service') {
-          steps {
-            sh '''cd email-service
-mvn clean install -Dlicense.skip=true'''
-          }
         }
 
       }
