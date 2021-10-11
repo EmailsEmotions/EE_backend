@@ -21,7 +21,7 @@ pipeline {
 
       }
       steps {
-        sh 'cd config-server && mvn test'
+        sh 'cd config-server'
       }
     }
 
