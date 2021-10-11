@@ -1,9 +1,14 @@
 pipeline {
   agent any
   stages {
-    stage('Build Config Server') {
+    stage('Checkout GitHub') {
       steps {
         checkout scm
+      }
+    }
+
+    stage('Build Config Server') {
+      steps {
         withMaven(maven: '3.8.3', jdk: 'Java') {
           sh 'cd config-server && mvn -B package -DskipTests'
           archiveArtifacts 'config-server/target/*.jar'
@@ -16,7 +21,6 @@ pipeline {
       parallel {
         stage('Build API Gateway') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd api-gateway && mvn -B package -DskipTests'
             }
@@ -26,7 +30,6 @@ pipeline {
 
         stage('Build Discovery Server') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd discovery-server && mvn -B package -DskipTests'
             }
@@ -36,7 +39,6 @@ pipeline {
 
         stage('Build Admin Server') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd admin-server && mvn -B package -DskipTests'
             }
@@ -46,7 +48,6 @@ pipeline {
 
         stage('Build Email Service') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd email-service && mvn -B package -DskipTests'
             }
@@ -56,7 +57,6 @@ pipeline {
 
         stage('Build Emotions Service') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd emotions-service && mvn -B package -DskipTests'
             }
@@ -66,7 +66,6 @@ pipeline {
 
         stage('Build Stats Service') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd stats-service && mvn -B package -DskipTests'
             }
@@ -76,7 +75,6 @@ pipeline {
 
         stage('Build Users Service') {
           steps {
-            checkout scm
             withMaven() {
               sh 'cd users-service && mvn -B package -DskipTests'
             }
