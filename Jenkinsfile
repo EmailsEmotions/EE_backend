@@ -1,107 +1,57 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'maven:3.8.1-adoptopenjdk-11'
+      args '-v /root/.m2:/root/.m2'
+    }
+
+  }
   stages {
     stage('Build everything') {
       parallel {
         stage('Build Config Server') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd config-server && mvn -B package -DskipTests'
           }
         }
 
         stage('Build API Gateway') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd api-gateway && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Discovery Server') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd discovery-server && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Admin Server') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd admin-server && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Email Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd email-service && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Emotions Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd emotions-service && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Stats Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd stats-service && mvn -B package -DskipTests'
           }
         }
 
         stage('Build Users Service') {
-          agent {
-            docker {
-              image 'maven:3.8-openjdk-11'
-              args '-v /root/.m2:/root/.m2'
-            }
-
-          }
           steps {
             sh 'cd users-service && mvn -B package -DskipTests'
           }
