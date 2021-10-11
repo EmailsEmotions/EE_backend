@@ -7,8 +7,8 @@ pipeline {
         echo 'Publishing image'
         sh '''cd config-server
 docker build -t config-server -f Dockerfile-with-maven .
-docker tag config-server localhost:5000/config-server:${env.BUILD_ID}
-docker push 172.18.0.20:5000/config-server:${env.BUILD_ID}
+docker tag config-server localhost:5000/config-server:${BUILD_ID}
+docker push 172.18.0.20:5000/config-server:${BUILD_ID}
 '''
       }
     }
