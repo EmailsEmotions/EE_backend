@@ -2,9 +2,22 @@ pipeline {
   agent any
   stages {
     stage('Clone repository') {
-      steps {
-        git(url: 'https://github.com/EmailsEmotions/EE_backend', branch: 'develop')
-        waitForQualityGate()
+      parallel {
+        stage('Clone repository') {
+          steps {
+            git(url: 'https://github.com/EmailsEmotions/EE_backend', branch: 'develop')
+          }
+        }
+
+        stage('SonarQube') {
+          steps {
+            withSonarQubeEnv('SonarQube') {
+              waitForQualityGate()
+            }
+
+          }
+        }
+
       }
     }
 
