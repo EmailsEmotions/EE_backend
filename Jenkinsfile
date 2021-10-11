@@ -2,19 +2,19 @@ pipeline {
   agent {
     docker {
       image 'maven:3.8.1-adoptopenjdk-11'
-      args '-v /root/.m2:/root/.m2'
+      args '-v $HOME/.m2:/root/.m2'
     }
 
   }
   stages {
-    stage('Build everything') {
-      parallel {
-        stage('Build Config Server') {
-          steps {
-            sh 'cd config-server && mvn -B package -DskipTests'
-          }
-        }
+    stage('Build Config Server') {
+      steps {
+        sh 'cd config-server && mvn -B package -DskipTests'
+      }
+    }
 
+    stage('Build other services') {
+      parallel {
         stage('Build API Gateway') {
           steps {
             sh 'cd api-gateway && mvn -B package -DskipTests'
