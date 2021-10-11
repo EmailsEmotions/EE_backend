@@ -11,10 +11,7 @@ pipeline {
 
         stage('SonarQube') {
           steps {
-            withSonarQubeEnv('SonarQube') {
-              waitForQualityGate()
-            }
-
+            withSonarQubeEnv 'SonarQube'
           }
         }
 
