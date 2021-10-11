@@ -1,29 +1,17 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.8-openjdk-11'
-      args '-v /root/.m2:/root/.m2'
-    }
-
-  }
+  agent any
   stages {
-    stage('Build') {
-      steps {
-        sh 'cd config-server && mvn -B package -DskipTests'
-      }
-    }
-
-    stage('Test') {
-      steps {
-        sh 'cd config-server'
-      }
-    }
-
     stage('Static Code Analysis') {
+      agent {
+        docker {
+          image 'maven:3.8-openjdk-11'
+          args '-v /root/.m2:/root/.m2'
+        }
+
+      }
       steps {
         withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
-          sh '''cd config-server 
-&& mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'''
+          sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
         }
 
       }
@@ -51,7 +39,7 @@ pipeline {
   }
   environment {
     registryCredentialSet = 'dockerhub-bjencz'
-    registryUri = 'http://172.18.0.6:5000'
+    registryUri = 'http://172.18.0.20:5000'
     dockerInstance = ''
   }
 }
