@@ -7,11 +7,10 @@ pipeline {
       }
     }
 
-    stage('Build Config Server') {
+    stage('Build Config Server (and init cache)') {
       steps {
-        withMaven(maven: '3.8.3', jdk: 'Java') {
+        withMaven() {
           sh 'cd config-server && mvn -B package -DskipTests'
-          archiveArtifacts 'config-server/target/*.jar'
         }
 
       }
@@ -92,19 +91,63 @@ pipeline {
       }
     }
 
-    stage('Publish to registry') {
+    stage('Create ready to go images') {
       parallel {
         stage('Config Server') {
           steps {
-            pwd()
-            sh '''pwd
-cd config-server
-ls -la
-pwd
-cd target
-ls -la
-cd ..
-docker build -t config-server -f Dockerfile .'''
+            sh 'cd config-server && docker build -t config-server -f Dockerfile .'
+          }
+        }
+
+        stage('API Gateway') {
+          steps {
+            sh 'cd api-gateway && docker build -t api-gateway -f Dockerfile .'
+          }
+        }
+
+        stage('Discovery Server') {
+          steps {
+            sh 'cd discovery-server && docker build -t discovery-server -f Dockerfile .'
+          }
+        }
+
+        stage('Admin Server') {
+          steps {
+            sh 'cd admin-server && docker build -t admin-server -f Dockerfile .'
+          }
+        }
+
+        stage('Email Service') {
+          steps {
+            sh 'cd email-service && docker build -t email-service -f Dockerfile .'
+          }
+        }
+
+        stage('Emotions Service') {
+          steps {
+            sh 'cd emotions-service && docker build -t emotions-service -f Dockerfile .'
+          }
+        }
+
+        stage('Stats Service') {
+          steps {
+            sh 'cd stats-service && docker build -t stats-service -f Dockerfile .'
+          }
+        }
+
+        stage('Users Service') {
+          steps {
+            sh 'cd users-service && docker build -t users-service -f Dockerfile .'
+          }
+        }
+
+      }
+    }
+
+    stage('Pushing images') {
+      parallel {
+        stage('Config Server') {
+          steps {
             sh '''cd config-server
 docker tag config-server $registryUri/config-server:${BUILD_ID}
 docker push $registryUri/config-server:${BUILD_ID}
@@ -114,7 +157,6 @@ docker push $registryUri/config-server:${BUILD_ID}
 
         stage('API Gateway') {
           steps {
-            sh 'cd api-gateway && docker build -t api-gateway -f Dockerfile .'
             sh '''cd api-gateway
 docker tag api-gateway $registryUri/api-gateway:${BUILD_ID}
 docker push $registryUri/api-gateway:${BUILD_ID}
@@ -124,7 +166,6 @@ docker push $registryUri/api-gateway:${BUILD_ID}
 
         stage('Discovery Server') {
           steps {
-            sh 'cd discovery-server && docker build -t discovery-server -f Dockerfile .'
             sh '''cd discovery-server
 docker tag discovery-server $registryUri/discovery-server:${BUILD_ID}
 docker push $registryUri/discovery-server:${BUILD_ID}
@@ -134,7 +175,6 @@ docker push $registryUri/discovery-server:${BUILD_ID}
 
         stage('Admin Server') {
           steps {
-            sh 'cd admin-server && docker build -t admin-server -f Dockerfile .'
             sh '''cd admin-server
 docker tag admin-server $registryUri/admin-server:${BUILD_ID}
 docker push $registryUri/admin-server:${BUILD_ID}
@@ -144,7 +184,6 @@ docker push $registryUri/admin-server:${BUILD_ID}
 
         stage('Email Service') {
           steps {
-            sh 'cd email-service && docker build -t email-service -f Dockerfile .'
             sh '''cd email-service
 docker tag email-service $registryUri/email-service:${BUILD_ID}
 docker push $registryUri/email-service:${BUILD_ID}
@@ -154,7 +193,6 @@ docker push $registryUri/email-service:${BUILD_ID}
 
         stage('Emotions Service') {
           steps {
-            sh 'cd emotions-service && docker build -t emotions-service -f Dockerfile .'
             sh '''cd emotions-service
 docker tag emotions-service $registryUri/emotions-service:${BUILD_ID}
 docker push $registryUri/emotions-service:${BUILD_ID}
@@ -164,7 +202,6 @@ docker push $registryUri/emotions-service:${BUILD_ID}
 
         stage('Stats Service') {
           steps {
-            sh 'cd stats-service && docker build -t stats-service -f Dockerfile .'
             sh '''cd stats-service
 docker tag stats-service $registryUri/stats-service:${BUILD_ID}
 docker push $registryUri/stats-service:${BUILD_ID}
@@ -174,7 +211,6 @@ docker push $registryUri/stats-service:${BUILD_ID}
 
         stage('Users Service') {
           steps {
-            sh 'cd users-service && docker build -t users-service -f Dockerfile .'
             sh '''cd users-service
 docker tag users-service $registryUri/users-service:${BUILD_ID}
 docker push $registryUri/users-service:${BUILD_ID}
