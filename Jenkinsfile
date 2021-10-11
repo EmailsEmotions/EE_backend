@@ -2,58 +2,58 @@ pipeline {
   agent {
     docker {
       image 'maven:3.8.1-adoptopenjdk-11'
-      args '-v $HOME/.m2:/root/.m2'
+      args '-v /root/.m2:/root/.m2'
     }
 
   }
   stages {
     stage('Build Config Server') {
       steps {
-        sh 'cd config-server && mvn -B package -DskipTests'
+        sh 'cd config-server && mvn -B clean package -DskipTests'
       }
     }
 
-    stage('Build other services') {
+    stage('Build rest') {
       parallel {
         stage('Build API Gateway') {
           steps {
-            sh 'cd api-gateway && mvn -B package -DskipTests'
+            sh 'cd api-gateway && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Discovery Server') {
           steps {
-            sh 'cd discovery-server && mvn -B package -DskipTests'
+            sh 'cd discovery-server && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Admin Server') {
           steps {
-            sh 'cd admin-server && mvn -B package -DskipTests'
+            sh 'cd admin-server && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Email Service') {
           steps {
-            sh 'cd email-service && mvn -B package -DskipTests'
+            sh 'cd email-service && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Emotions Service') {
           steps {
-            sh 'cd emotions-service && mvn -B package -DskipTests'
+            sh 'cd emotions-service && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Stats Service') {
           steps {
-            sh 'cd stats-service && mvn -B package -DskipTests'
+            sh 'cd stats-service && mvn -B clean package -DskipTests'
           }
         }
 
         stage('Build Users Service') {
           steps {
-            sh 'cd users-service && mvn -B package -DskipTests'
+            sh 'cd users-service && mvn -B clean package -DskipTests'
           }
         }
 
@@ -73,7 +73,7 @@ pipeline {
           agent any
           steps {
             sh '''cd config-server 
-docker build -t config-server -f Dockerfile-with-maven .'''
+docker build -t config-server -f Dockerfile .'''
             sh '''cd config-server
 docker tag config-server $registryUri/config-server:${BUILD_ID}
 docker push $registryUri/config-server:${BUILD_ID}
@@ -85,7 +85,7 @@ docker push $registryUri/config-server:${BUILD_ID}
           agent any
           steps {
             sh '''cd api-gateway 
-docker build -t api-gateway -f Dockerfile-with-maven .'''
+docker build -t api-gateway -f Dockerfile .'''
             sh '''cd api-gateway
 docker tag api-gateway $registryUri/api-gateway:${BUILD_ID}
 docker push $registryUri/api-gateway:${BUILD_ID}
@@ -97,7 +97,7 @@ docker push $registryUri/api-gateway:${BUILD_ID}
           agent any
           steps {
             sh '''cd discovery-server 
-docker build -t discovery-server -f Dockerfile-with-maven .'''
+docker build -t discovery-server -f Dockerfile .'''
             sh '''cd discovery-server
 docker tag discovery-server $registryUri/discovery-server:${BUILD_ID}
 docker push $registryUri/discovery-server:${BUILD_ID}
@@ -109,7 +109,7 @@ docker push $registryUri/discovery-server:${BUILD_ID}
           agent any
           steps {
             sh '''cd admin-server 
-docker build -t admin-server -f Dockerfile-with-maven .'''
+docker build -t admin-server -f Dockerfile .'''
             sh '''cd admin-server
 docker tag admin-server $registryUri/admin-server:${BUILD_ID}
 docker push $registryUri/admin-server:${BUILD_ID}
@@ -121,7 +121,7 @@ docker push $registryUri/admin-server:${BUILD_ID}
           agent any
           steps {
             sh '''cd email-service 
-docker build -t email-service -f Dockerfile-with-maven .'''
+docker build -t email-service -f Dockerfile .'''
             sh '''cd email-service
 docker tag email-service $registryUri/email-service:${BUILD_ID}
 docker push $registryUri/email-service:${BUILD_ID}
@@ -133,7 +133,7 @@ docker push $registryUri/email-service:${BUILD_ID}
           agent any
           steps {
             sh '''cd emotions-service 
-docker build -t emotions-service -f Dockerfile-with-maven .'''
+docker build -t emotions-service -f Dockerfile .'''
             sh '''cd emotions-service
 docker tag emotions-service $registryUri/emotions-service:${BUILD_ID}
 docker push $registryUri/emotions-service:${BUILD_ID}
@@ -145,7 +145,7 @@ docker push $registryUri/emotions-service:${BUILD_ID}
           agent any
           steps {
             sh '''cd stats-service 
-docker build -t stats-service -f Dockerfile-with-maven .'''
+docker build -t stats-service -f Dockerfile .'''
             sh '''cd stats-service
 docker tag stats-service $registryUri/stats-service:${BUILD_ID}
 docker push $registryUri/stats-service:${BUILD_ID}
@@ -157,7 +157,7 @@ docker push $registryUri/stats-service:${BUILD_ID}
           agent any
           steps {
             sh '''cd users-service 
-docker build -t users-service -f Dockerfile-with-maven .'''
+docker build -t users-service -f Dockerfile .'''
             sh '''cd users-service
 docker tag users-service $registryUri/users-service:${BUILD_ID}
 docker push $registryUri/users-service:${BUILD_ID}
