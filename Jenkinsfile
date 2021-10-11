@@ -13,5 +13,26 @@ pipeline {
       }
     }
 
+    stage('Test') {
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml'
+        }
+
+      }
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+    stage('Static Code Analysis') {
+      steps {
+        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins-sonar') {
+          sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+        }
+
+      }
+    }
+
   }
 }
