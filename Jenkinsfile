@@ -1,94 +1,78 @@
 pipeline {
   agent any
   stages {
-    stage('Clone repository') {
-      parallel {
-        stage('Clone repository') {
-          steps {
-            git(url: 'https://github.com/EmailsEmotions/EE_backend', branch: 'develop')
-          }
-        }
-
-        stage('SonarQube') {
-          steps {
-            withSonarQubeEnv 'SonarQube'
-          }
-        }
-
-      }
-    }
-
     stage('Build') {
       parallel {
         stage('Build Config Server') {
           steps {
+            echo 'Building Config Server'
             sh '''cd config-server
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build Discovery Server') {
           steps {
             sh '''cd discovery-server
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build API Gateway') {
           steps {
             sh '''cd api-gateway
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build Admin Server') {
           steps {
             sh '''cd admin-server
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build User Service') {
           steps {
             sh '''cd users-service
-docker build -f Dockerfile-with-maven .'''
-          }
-        }
-
-        stage('Build Formality Service') {
-          steps {
-            sh '''cd formality-service
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build Emotions Service') {
           steps {
             sh '''cd emotions-service
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build Stats Service') {
           steps {
             sh '''cd stats-service
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
         stage('Build Email Service') {
           steps {
             sh '''cd email-service
-docker build -f Dockerfile-with-maven .'''
+mvn clean install -Dlicense.skip=true'''
           }
         }
 
       }
     }
 
-    stage('error') {
+    stage('Build Completed') {
       steps {
         echo 'Build Completed'
+      }
+    }
+
+    stage('Config Server Analysis') {
+      steps {
+        sh '''cd config-server
+mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dlicense.skip=true'''
       }
     }
 
