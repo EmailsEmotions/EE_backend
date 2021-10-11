@@ -4,6 +4,7 @@ pipeline {
     stage('Clone repository') {
       steps {
         git(url: 'https://github.com/EmailsEmotions/EE_backend', branch: 'develop')
+        waitForQualityGate()
       }
     }
 
@@ -75,7 +76,7 @@ docker build -f Dockerfile-with-maven .'''
       }
     }
 
-    stage('') {
+    stage('error') {
       steps {
         echo 'Build Completed'
       }
