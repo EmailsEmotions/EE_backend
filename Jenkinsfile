@@ -1,22 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Static Code Analysis') {
-      agent {
-        docker {
-          image 'maven:3.8-openjdk-11'
-          args '-v /root/.m2:/root/.m2'
-        }
-
-      }
-      steps {
-        withSonarQubeEnv('SonarQube') {
-          sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-        }
-
-      }
-    }
-
     stage('Publish') {
       agent any
       steps {
