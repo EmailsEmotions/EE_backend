@@ -5,10 +5,12 @@ pipeline {
       parallel {
         stage('Build Config Server') {
           steps {
-            withMaven()
-            echo 'Building Config Server'
-            sh '''cd config-server
+            withMaven() {
+              echo 'Building Config Server'
+              sh '''cd config-server
 mvn clean install -Dlicense.skip=true'''
+            }
+
           }
         }
 
