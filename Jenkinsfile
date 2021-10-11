@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'cd config-server && mvn -B -DskipTests'
+        sh 'cd config-server && mvn -B package -DskipTests'
       }
     }
 
