@@ -5,7 +5,7 @@ pipeline {
       steps {
         withMaven(maven: '3.8.3', jdk: 'Java') {
           sh 'cd config-server && mvn -B package -DskipTests'
-          archiveArtifacts 'target/*.jar'
+          archiveArtifacts 'config-server/target/*.jar'
         }
 
       }
