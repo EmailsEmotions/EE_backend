@@ -22,7 +22,7 @@ mvn clean install -Dmaven.test.skip=true'''
       steps {
         withMaven(jdk: 'Java', maven: 'maven') {
           sh '''cd config-server &&
-mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dlicense.skip=true'''
+mvn sonar:sonar -Dsonar.host.url=172.18.0.4 -Dlicense.skip=true'''
         }
 
       }
