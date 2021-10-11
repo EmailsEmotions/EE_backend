@@ -21,7 +21,7 @@ pipeline {
 
     stage('Static Code Analysis') {
       steps {
-        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins-sonar') {
+        withSonarQubeEnv('SonarQube') {
           sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
         }
 
