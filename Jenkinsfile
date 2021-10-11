@@ -97,8 +97,11 @@ pipeline {
         stage('Config Server') {
           agent any
           steps {
-            sh '''cd config-server
+            pwd()
+            sh '''pwd
+cd config-server
 ls -la
+pwd
 cd target
 ls -la
 cd ..
