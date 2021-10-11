@@ -10,10 +10,6 @@ pipeline {
     stage('Build') {
       steps {
         sh 'cd config-server && mvn -B package -DskipTests'
-        script {
-          configServer = docker.build('config-server')
-        }
-
       }
     }
 
@@ -33,8 +29,13 @@ pipeline {
     }
 
     stage('Publish') {
+      agent any
       steps {
         echo 'Publishing image'
+        script {
+          dockerInstance = docker.build(imageName)
+        }
+
         script {
           docker.withRegistry(registryUri) {
             configServer.push("${env.BUILD_NUMBER}")
