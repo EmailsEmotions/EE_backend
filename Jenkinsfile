@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build Config Server') {
       steps {
-        withMaven(maven: 'maven-auto', jdk: 'Java') {
+        withMaven(maven: '3.8.3', jdk: 'Java') {
           sh 'cd config-server && mvn -B package -DskipTests'
         }
 
@@ -192,6 +192,9 @@ docker push $registryUri/users-service:${BUILD_ID}
       }
     }
 
+  }
+  tools {
+    maven '3.8.3'
   }
   environment {
     registryUri = '172.18.0.20:5000'
