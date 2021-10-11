@@ -10,6 +10,10 @@ pipeline {
     stage('Build') {
       steps {
         sh 'cd config-server && mvn -B package -DskipTests'
+        script {
+          configServer = docker.build('config-server')
+        }
+
       }
     }
 
@@ -28,5 +32,23 @@ pipeline {
       }
     }
 
+    stage('Publish') {
+      steps {
+        echo 'Publishing image'
+        script {
+          docker.withRegistry(registryUri) {
+            configServer.push("${env.BUILD_NUMBER}")
+            configServer.push("latest")
+          }
+        }
+
+      }
+    }
+
+  }
+  environment {
+    registryCredentialSet = 'dockerhub-bjencz'
+    registryUri = 'http://172.18.0.6:5000'
+    dockerInstance = ''
   }
 }
