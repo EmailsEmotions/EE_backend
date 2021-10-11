@@ -1,4 +1,6 @@
+# Logback tutorial
 Tutorial from: https://lankydan.dev/2019/01/09/configuring-logback-with-spring-boot
+
 Logback is provided out of the box with Spring Boot when you use one of the Spring Boot starter dependencies as they include `spring-boot-starter-logging` providing logging without any configuration and can be altered to work differently if required. There are two ways of providing your own configuration, if you only need simpler alterations they can be added to a properties file such as `application.properties` or for more complex needs you can use XML or Groovy to specify your settings. In this tutorial we will focus on using XML to define custom logging configuration and look at some of the basics of doing so, as well as a brief look at using property files to specify simple alterations to the standard setup provided by Spring Boot.
 
 In this post I have used the dependency `spring-boot-starter` to pull in `spring-boot-starter-logging` which can be found below.

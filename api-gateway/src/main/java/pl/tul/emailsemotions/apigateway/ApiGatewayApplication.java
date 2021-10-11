@@ -11,12 +11,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import java.time.Duration;
+import java.util.UUID;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {
+        System.setProperty("app_uuid", UUID.randomUUID().toString());
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 

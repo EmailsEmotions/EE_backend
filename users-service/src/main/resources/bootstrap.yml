@@ -4,9 +4,6 @@ spring:
       uri: http://localhost:8888
   application:
     name: users-service
-  level:
-    org.springframework: WARN
-    org.hibernate: WARN
 spring.logstash:
   server: localhost
   port: 5000

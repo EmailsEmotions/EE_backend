@@ -1,6 +1,17 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
       routes:
         - id: users-service
           uri: lb://users-service
@@ -12,5 +23,29 @@ spring:
           uri: lb://formality-service
           predicates:
             - Path=/api/formality/**
+          filters:
+            - StripPrefix=2
+        - id: emotions-service
+          uri: lb://emotions-service
+          predicates:
+            - Path=/api/emotions/**
+          filters:
+            - StripPrefix=2
+        - id: stats-service
+          uri: lb://stats-service
+          predicates:
+            - Path=/api/stats/**
+          filters:
+            - StripPrefix=2
+        - id: email-service
+          uri: lb://email-service
+          predicates:
+            - Path=/api/email/**
+          filters:
+            - StripPrefix=2
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/api/ai/**
           filters:
             - StripPrefix=2
