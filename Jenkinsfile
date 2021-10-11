@@ -18,11 +18,10 @@ mvn clean install -Dmaven.test.skip=true'''
       }
     }
 
-    stage('Config Server Analysis') {
+    stage('SonarV2') {
       steps {
-        withMaven(jdk: 'Java', maven: 'maven') {
-          sh '''cd config-server &&
-mvn sonar:sonar -Dsonar.host.url=http://172.18.0.4:9000 -Dlicense.skip=true'''
+        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins-sonar') {
+          sh 'cd config-server && mvn clean package sonar:sonar'
         }
 
       }
