@@ -10,7 +10,7 @@ pipeline {
 
       }
       steps {
-        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+        withSonarQubeEnv('SonarQube') {
           sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
         }
 
