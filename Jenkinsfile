@@ -9,7 +9,8 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker build -f config-server/Dockerfile-with-maven .'
+        sh '''cd config-server
+docker build -f Dockerfile-with-maven .'''
       }
     }
 
