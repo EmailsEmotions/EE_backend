@@ -1,59 +1,77 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.8.1-adoptopenjdk-11'
-      args '-v /root/.m2:/root/.m2'
-    }
-
-  }
+  agent any
   stages {
     stage('Build Config Server') {
       steps {
-        sh 'cd config-server && mvn -B clean package -DskipTests'
+        withMaven() {
+          sh 'cd config-server && mvn -B package -DskipTests'
+        }
+
       }
     }
 
-    stage('Build rest') {
+    stage('Build everything') {
       parallel {
         stage('Build API Gateway') {
           steps {
-            sh 'cd api-gateway && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd api-gateway && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Discovery Server') {
           steps {
-            sh 'cd discovery-server && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd discovery-server && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Admin Server') {
           steps {
-            sh 'cd admin-server && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd admin-server && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Email Service') {
           steps {
-            sh 'cd email-service && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd email-service && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Emotions Service') {
           steps {
-            sh 'cd emotions-service && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd emotions-service && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Stats Service') {
           steps {
-            sh 'cd stats-service && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd stats-service && mvn -B package -DskipTests'
+            }
+
           }
         }
 
         stage('Build Users Service') {
           steps {
-            sh 'cd users-service && mvn -B clean package -DskipTests'
+            withMaven() {
+              sh 'cd users-service && mvn -B package -DskipTests'
+            }
+
           }
         }
 
