@@ -90,7 +90,12 @@ pipeline {
         stage('Config Server') {
           agent any
           steps {
-            sh 'cd config-server && docker build -t config-server -f Dockerfile .'
+            sh '''cd config-server
+ls -la
+cd target
+ls -la
+cd ..
+docker build -t config-server -f Dockerfile .'''
             sh '''cd config-server
 docker tag config-server $registryUri/config-server:${BUILD_ID}
 docker push $registryUri/config-server:${BUILD_ID}
