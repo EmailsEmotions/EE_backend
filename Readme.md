@@ -68,7 +68,7 @@ $ export DOCKER_BUILDKIT=1 # or configure in daemon.json
 $ export COMPOSE_DOCKER_CLI_BUILD=1
 $ docker-compose -f docker-compose-with-maven.yaml up --build -d
 $ docker-compose -f docker-compose.yaml up --build -d
-$ docker-compose -f docker-compose.yaml up -f docker-compose-ai.yaml --build -d
+$ docker-compose -f docker-compose.yaml up -f docker-compose-ai.yaml up --build -d
 ```
 ## Git Flow Setup
 ```shell
