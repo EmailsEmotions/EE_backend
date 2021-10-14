@@ -87,7 +87,7 @@ pipeline {
     stage('Test Config Server') {
       steps {
         withMaven() {
-          sh 'cd config-service && mvn test'
+          sh 'cd config-server && mvn test'
         }
 
       }
