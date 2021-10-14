@@ -84,6 +84,15 @@ pipeline {
       }
     }
 
+    stage('Test Config Server') {
+      steps {
+        withMaven() {
+          sh 'cd config-server && mvn test'
+        }
+
+      }
+    }
+
     stage('Confirm publish to registry') {
       steps {
         echo 'Registry IP: $registryUri'
