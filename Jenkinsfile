@@ -107,6 +107,15 @@ pipeline {
       }
     }
 
+    stage('Static Code Analysis') {
+      steps {
+        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+          sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+        }
+
+      }
+    }
+
     stage('Confirm publish to registry') {
       steps {
         echo 'Registry IP: $registryUri'
