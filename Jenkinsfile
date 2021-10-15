@@ -84,10 +84,24 @@ pipeline {
       }
     }
 
-    stage('Test Config Server') {
-      steps {
-        withMaven() {
-          sh 'cd config-server && mvn test'
+    stage('Test All') {
+      parallel {
+        stage('Test Config Server') {
+          steps {
+            withMaven() {
+              sh 'cd config-server && mvn test'
+            }
+
+          }
+        }
+
+        stage('Test Email Service') {
+          steps {
+            withMaven() {
+              sh 'cd email-service && mvn test'
+            }
+
+          }
         }
 
       }
