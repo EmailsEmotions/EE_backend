@@ -81,6 +81,15 @@ pipeline {
           }
         }
 
+        stage('Build Formality Service') {
+          steps {
+            withMaven() {
+              sh 'cd formality-service && mvn -B package -DskipTests'
+            }
+
+          }
+        }
+
       }
     }
 
@@ -95,6 +104,33 @@ pipeline {
           }
         }
 
+        stage('Test API Gateway') {
+          steps {
+            withMaven() {
+              sh 'cd api-gateway && mvn test'
+            }
+
+          }
+        }
+
+        stage('Test Discovery Server') {
+          steps {
+            withMaven() {
+              sh 'cd discovery-server && mvn test'
+            }
+
+          }
+        }
+
+        stage('Test Admin Server') {
+          steps {
+            withMaven() {
+              sh 'cd admin-server && mvn test'
+            }
+
+          }
+        }
+
         stage('Test Email Service') {
           steps {
             withMaven() {
@@ -104,13 +140,40 @@ pipeline {
           }
         }
 
-      }
-    }
+        stage('Test Emotions Service') {
+          steps {
+            withMaven() {
+              sh 'cd emotions-service && mvn test'
+            }
 
-    stage('Static Code Analysis') {
-      steps {
-        withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
-          sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+          }
+        }
+
+        stage('Test Stats Service') {
+          steps {
+            withMaven() {
+              sh 'cd stats-service && mvn test'
+            }
+
+          }
+        }
+
+        stage('Test Users Service') {
+          steps {
+            withMaven() {
+              sh 'cd users-service && mvn test'
+            }
+
+          }
+        }
+
+        stage('Test Formality Service') {
+          steps {
+            withMaven() {
+              sh 'cd formality-service && mvn test'
+            }
+
+          }
         }
 
       }
