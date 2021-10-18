@@ -113,24 +113,6 @@ pipeline {
           }
         }
 
-        stage('Test Discovery Server') {
-          steps {
-            withMaven() {
-              sh 'cd discovery-server && mvn test'
-            }
-
-          }
-        }
-
-        stage('Test Admin Server') {
-          steps {
-            withMaven() {
-              sh 'cd admin-server && mvn test'
-            }
-
-          }
-        }
-
         stage('Test Email Service') {
           steps {
             withMaven() {
