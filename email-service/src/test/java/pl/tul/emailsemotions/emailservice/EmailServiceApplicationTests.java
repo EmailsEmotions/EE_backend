@@ -43,7 +43,7 @@ class EmailServiceApplicationTests {
         assertThat(EMAIL_TEST_CORRECT_1.matches(EmailsEmotionsUtilites.EMAIL_REGEX)).isEqualTo(true);
         assertThat(EMAIL_TEST_CORRECT_2.matches(EmailsEmotionsUtilites.EMAIL_REGEX)).isEqualTo(true);
         assertThat(EMAIL_TEST_WRONG_1.matches(EmailsEmotionsUtilites.EMAIL_REGEX)).isEqualTo(true);
-        assertThat(EMAIL_TEST_WRONG_2.matches(EmailsEmotionsUtilites.EMAIL_REGEX)).isEqualTo(true);
+        assertThat(EMAIL_TEST_WRONG_2.matches(EmailsEmotionsUtilites.EMAIL_REGEX)).isEqualTo(false);
     }
 
     @Test
