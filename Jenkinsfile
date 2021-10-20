@@ -161,6 +161,92 @@ pipeline {
       }
     }
 
+    stage('Static Code Analysis') {
+      parallel {
+        stage('Config Server') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd config-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('API Gateway') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd api-gateway && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Admin Server') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd admin-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Discovery Server') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd discovery-server && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Email Service') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd email-service && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Emotions Service') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd emotions-service && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Formality Service') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd formality-service && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Stats Service') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd stats-service && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+        stage('Users Service') {
+          steps {
+            withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'jenkins') {
+              sh 'cd users-service && mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+
+          }
+        }
+
+      }
+    }
+
     stage('Confirm publish to registry') {
       steps {
         echo 'Registry IP: $registryUri'
