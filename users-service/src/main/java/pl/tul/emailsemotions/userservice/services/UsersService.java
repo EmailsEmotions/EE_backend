@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserService {
+public class UsersService {
     private final UserRepository userRepository;
     private final MailClient mailClient;
 

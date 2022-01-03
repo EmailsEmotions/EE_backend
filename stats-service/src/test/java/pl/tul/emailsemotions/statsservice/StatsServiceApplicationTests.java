@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.apigateway;
+package pl.tul.emailsemotions.statsservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,7 +7,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ApiGatewayApplicationTests {
+class StatsServiceApplicationTests {
 
     @Test
     void swaggerConfigTest() {

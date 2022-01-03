@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
-import pl.tul.emailsemotions.userservice.services.UserService;
+import pl.tul.emailsemotions.userservice.services.UsersService;
 import pl.tul.emailsemotions.userservice.clients.models.BaseText;
 import pl.tul.emailsemotions.userservice.clients.models.emotions.EmotionsText;
 import pl.tul.emailsemotions.userservice.clients.models.formality.FormalityText;
@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class UserController {
+public class UsersController {
 
-    private final UserService userService;
+    private final UsersService userService;
     private final FormalityClient formalityClient;
     private final EmotionsClient emotionsClient;
 
