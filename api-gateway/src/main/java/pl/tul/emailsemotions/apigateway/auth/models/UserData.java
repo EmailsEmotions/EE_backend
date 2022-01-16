@@ -1,12 +1,18 @@
-package pl.tul.emailsemotions.userservice.model;
+package pl.tul.emailsemotions.apigateway.auth.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.tul.emailsemotions.api.AccountType;
-import pl.tul.emailsemotions.userservice.utils.Utilities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -14,7 +20,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class UserData {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +30,6 @@ public class User {
     @NotNull
     private String username;
 
-    @Pattern(regexp = Utilities.EMAIL_REGEX)
     @Column(name = "email")
     @NotNull
     private String email;

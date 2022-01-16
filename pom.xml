@@ -26,6 +26,7 @@
         <module>emotions-service</module>
         <module>stats-service</module>
         <module>email-service</module>
+        <module>shared</module>
     </modules>
 
 	<properties>

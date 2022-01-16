@@ -4,6 +4,16 @@ spring:
       uri: http://localhost:8888
   application:
     name: api-gateway
+  datasource:
+    url: jdbc:mysql://localhost:3308/users?useSSL=false
+#    url: jdbc:mysql://db-users:3306/users?useSSL=false
+    username: user
+    password: emailsemotions
+    initialization-mode: ALWAYS
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
 spring.logstash:
   server: localhost
   port: 5000

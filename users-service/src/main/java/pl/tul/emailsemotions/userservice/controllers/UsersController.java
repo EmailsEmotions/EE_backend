@@ -5,16 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
-import pl.tul.emailsemotions.userservice.services.UsersService;
+import pl.tul.emailsemotions.api.AccountType;
+import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
+import pl.tul.emailsemotions.userservice.clients.FormalityClient;
 import pl.tul.emailsemotions.userservice.clients.models.BaseText;
 import pl.tul.emailsemotions.userservice.clients.models.emotions.EmotionsText;
 import pl.tul.emailsemotions.userservice.clients.models.formality.FormalityText;
-import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
-import pl.tul.emailsemotions.userservice.clients.FormalityClient;
-import pl.tul.emailsemotions.userservice.dto.LoginDTO;
-import pl.tul.emailsemotions.userservice.model.AccountType;
+import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
 import pl.tul.emailsemotions.userservice.model.User;
+import pl.tul.emailsemotions.userservice.services.UsersService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
@@ -121,17 +120,18 @@ public class UsersController {
             .collect(Collectors.toList());
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
-        Boolean isLogged;
-        try {
-            isLogged = userService.login(loginDTO);
-        } catch (EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                Map.of("error", ex.getMessage()));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-            Map.of("logged", isLogged));
-    }
+    //TODO: delete this
+//    @PostMapping("/login")
+//    @ResponseBody
+//    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+//        Boolean isLogged;
+//        try {
+//            isLogged = userService.login(loginDTO);
+//        } catch (EntityNotFoundException ex) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+//                Map.of("error", ex.getMessage()));
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//            Map.of("logged", isLogged));
+//    }
 }
