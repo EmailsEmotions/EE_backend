@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"pl.tul.emailsemotions"})
 @EnableDiscoveryClient
 public class EmailServiceApplication {
 

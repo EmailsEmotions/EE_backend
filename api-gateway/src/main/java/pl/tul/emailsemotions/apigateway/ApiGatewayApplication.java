@@ -10,14 +10,13 @@ import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigB
 import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Duration;
 import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"pl.tul.emailsemotions"})
 @EnableDiscoveryClient
 @EnableJpaRepositories
 @EntityScan

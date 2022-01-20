@@ -1,7 +1,7 @@
 package pl.tul.emailsemotions.userservice.model;
 
 import lombok.*;
-import pl.tul.emailsemotions.api.AccountType;
+import pl.tul.emailsemotions.shared.api.AccountType;
 import pl.tul.emailsemotions.userservice.utils.Utilities;
 
 import javax.persistence.*;

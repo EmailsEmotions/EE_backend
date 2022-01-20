@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.exceptions;
+package pl.tul.emailsemotions.shared.exceptions;
 
 public class AlreadyTakenException extends ApplicationException {
     private static final String CODE = "already_taken";

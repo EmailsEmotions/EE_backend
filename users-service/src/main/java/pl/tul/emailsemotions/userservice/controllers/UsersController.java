@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.tul.emailsemotions.api.AccountType;
+import pl.tul.emailsemotions.shared.api.AccountType;
+import pl.tul.emailsemotions.shared.exceptions.WrongArgumentException;
+import pl.tul.emailsemotions.shared.verify.AccountTypeVerifier;
 import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
 import pl.tul.emailsemotions.userservice.clients.FormalityClient;
 import pl.tul.emailsemotions.userservice.clients.models.BaseText;
@@ -32,12 +34,15 @@ public class UsersController {
     private final EmotionsClient emotionsClient;
 
     @GetMapping(value = "/getAll")
-    public List<User> findAll() {
+    public List<User> findAll(@RequestHeader String loggedUserRole) {
+        AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
         return userService.getAll();
     }
 
     @GetMapping(value = "/find")
-    public User findUser(@RequestParam("username") String username) {
+    public User findUser(@RequestHeader String loggedUserRole,
+                         @RequestParam("username") String username) {
+        AccountTypeVerifier.verifyUserRoleIsOnList(loggedUserRole, AccountType.ADMIN);
         return userService.findByUsername(username);
     }
 
@@ -47,12 +52,19 @@ public class UsersController {
     }
 
     @GetMapping(value = "/{userId}")
-    public User findUser(@PathVariable("userId") Long userId) {
+    public User findUser(@RequestHeader String loggedUserId,
+                         @RequestHeader String loggedUserRole,
+                         @PathVariable("userId") Long userId) {
+        if (!Long.valueOf(loggedUserId).equals(userId)) {
+            AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
+        }
         return userService.get(userId);
     }
 
     @PostMapping(value = "/{userId}/activate")
-    public ResponseEntity activateUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity activateUser(@RequestHeader String loggedUserRole,
+                                       @PathVariable("userId") Long userId) {
+        AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
         try {
             userService.changeActiveStatus(userId, true);
             HashMap<String, String> body = new HashMap<>();
@@ -64,7 +76,9 @@ public class UsersController {
     }
 
     @PostMapping(value = "/{userId}/deactivate")
-    public ResponseEntity deactivateUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity deactivateUser(@RequestHeader String loggedUserRole,
+                                         @PathVariable("userId") Long userId) {
+        AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
         try {
             userService.changeActiveStatus(userId, false);
             HashMap<String, String> body = new HashMap<>();
@@ -76,7 +90,10 @@ public class UsersController {
     }
 
     @PostMapping(value = "/{userId}/changeAccountType")
-    public ResponseEntity changeAccountType(@PathVariable("userId") Long userId, @RequestParam("accounttype") AccountType accountType) {
+    public ResponseEntity changeAccountType(@RequestHeader String loggedUserRole,
+                                            @PathVariable("userId") Long userId,
+                                            @RequestParam("accounttype") AccountType accountType) {
+        AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
         try {
             userService.changeAccountType(userId, accountType);
             HashMap<String, String> body = new HashMap<>();
@@ -88,7 +105,12 @@ public class UsersController {
     }
 
     @GetMapping(value = "/{userId}/confirmAccount")
-    public ResponseEntity confirmAccount(@PathVariable("userId") Long userId) {
+    public ResponseEntity confirmAccount(@PathVariable("userId") Long userId,
+                                         @RequestHeader String loggedUserId,
+                                         @RequestHeader String loggedUserRole) {
+        if (!Long.valueOf(loggedUserId).equals(userId)) {
+            AccountTypeVerifier.verifyUserRole(loggedUserRole, AccountType.ADMIN);
+        }
         try {
             userService.changeConfirmedStatus(userId, true);
             HashMap<String, String> body = new HashMap<>();
@@ -119,19 +141,4 @@ public class UsersController {
             formalityClient.getAllBase().stream())
             .collect(Collectors.toList());
     }
-
-    //TODO: delete this
-//    @PostMapping("/login")
-//    @ResponseBody
-//    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
-//        Boolean isLogged;
-//        try {
-//            isLogged = userService.login(loginDTO);
-//        } catch (EntityNotFoundException ex) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                Map.of("error", ex.getMessage()));
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//            Map.of("logged", isLogged));
-//    }
 }

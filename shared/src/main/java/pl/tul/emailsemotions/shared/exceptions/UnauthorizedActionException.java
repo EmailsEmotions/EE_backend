@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.exceptions;
+package pl.tul.emailsemotions.shared.exceptions;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -10,12 +10,12 @@ public class PasswordEncoderImpl implements PasswordEncoder {
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Override
-    public String encode(CharSequence charSequence) {
-        return PASSWORD_ENCODER.encode(charSequence);
+    public String encode(CharSequence rawPassword) {
+        return PASSWORD_ENCODER.encode(rawPassword);
     }
 
     @Override
-    public boolean matches(CharSequence charSequence, String s) {
-        return PASSWORD_ENCODER.matches(charSequence, s);
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return PASSWORD_ENCODER.matches(rawPassword, encodedPassword);
     }
 }

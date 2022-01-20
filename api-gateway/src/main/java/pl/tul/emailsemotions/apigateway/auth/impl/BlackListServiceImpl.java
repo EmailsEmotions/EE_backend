@@ -6,14 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import pl.tul.emailsemotions.apigateway.auth.interfaces.BlackListService;
 import pl.tul.emailsemotions.apigateway.auth.interfaces.TokenExpirationService;
 import pl.tul.emailsemotions.apigateway.auth.models.BlackListedTokenData;
 import pl.tul.emailsemotions.apigateway.auth.repos.BlackListedTokenRepository;
 import pl.tul.emailsemotions.apigateway.auth.rest.response.BlackListedToken;
-import pl.tul.emailsemotions.exceptions.IllegalActionException;
-import pl.tul.emailsemotions.exceptions.WrongArgumentException;
+import pl.tul.emailsemotions.shared.exceptions.IllegalActionException;
+import pl.tul.emailsemotions.shared.exceptions.WrongArgumentException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,8 +34,7 @@ public class BlackListServiceImpl implements BlackListService {
     }
 
     @Override
-    public void addTokenFromHeader(String header) {
-        String token = AuthTokenFilterImpl.getTokenFromHeader(header);
+    public void addTokenFromHeader(String token) {
         if (token == null) {
             throw new WrongArgumentException("Bad token format!");
         }

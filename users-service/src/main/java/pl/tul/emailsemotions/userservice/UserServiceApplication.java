@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.UUID;
 
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"pl.tul.emailsemotions"})
 @EnableFeignClients
 public class UserServiceApplication {
 

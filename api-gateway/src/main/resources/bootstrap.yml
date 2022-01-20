@@ -7,10 +7,13 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3308/users?useSSL=false
 #    url: jdbc:mysql://db-users:3306/users?useSSL=false
+#    driver-class-name: com.mysql.jdbc.Driver
     username: user
     password: emailsemotions
     initialization-mode: ALWAYS
-    driver-class-name: com.mysql.jdbc.Driver
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
   jpa:
     hibernate:
       ddl-auto: update

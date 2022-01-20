@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import pl.tul.emailsemotions.api.AccountType;
+import pl.tul.emailsemotions.shared.api.AccountType;
 import pl.tul.emailsemotions.userservice.clients.MailClient;
 import pl.tul.emailsemotions.userservice.clients.models.MailObject;
 import pl.tul.emailsemotions.userservice.dto.AddUserDTO;

@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.exceptions;
+package pl.tul.emailsemotions.shared.exceptions;
 
 public abstract class ApplicationException extends RuntimeException {
     private final String code;

@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.api;
+package pl.tul.emailsemotions.shared.api;
 
 public enum AccountType {
     LOCAL,

@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.tul.emailsemotions.api.AccountType;
+import pl.tul.emailsemotions.shared.api.AccountType;
+import pl.tul.emailsemotions.shared.api.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,4 +50,15 @@ public class UserData {
     @Column(name = "accounttype")
     @NotNull
     private AccountType accountType;
+
+    public User toUser() {
+        return User.builder()
+            .id(getId())
+            .username(getUsername())
+            .email(getEmail())
+            .active(isActive())
+            .confirmed(isConfirmed())
+            .accountType(getAccountType())
+            .build();
+    }
 }

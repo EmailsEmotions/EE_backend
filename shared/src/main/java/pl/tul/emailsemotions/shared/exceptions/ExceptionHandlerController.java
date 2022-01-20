@@ -1,4 +1,4 @@
-package pl.tul.emailsemotions.exceptions;
+package pl.tul.emailsemotions.shared.exceptions;
 
 import org.hibernate.exception.GenericJDBCException;
 import org.slf4j.Logger;

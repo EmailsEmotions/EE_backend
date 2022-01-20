@@ -2,7 +2,7 @@ package pl.tul.emailsemotions.apigateway.auth.rest.response;
 
 import lombok.Builder;
 import lombok.Data;
-import pl.tul.emailsemotions.api.User;
+import pl.tul.emailsemotions.shared.api.User;
 
 @Builder
 @Data
