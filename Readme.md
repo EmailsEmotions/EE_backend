@@ -1,6 +1,11 @@
 # EmailsEmotions microservice backend
 
 # Important informations
+# Running
+Build all artifacts and run
+```shell
+docker-compose -f docker-compose.yaml -f docker-compose-ai.yaml up --build -d
+```
 ## Docker
 Make sure to run `docker-compose stop` or `docker-compose down` or `docker-compose down -v` 
 or `docker-compose rm` to clear your working environment.
@@ -68,7 +73,7 @@ $ export DOCKER_BUILDKIT=1 # or configure in daemon.json
 $ export COMPOSE_DOCKER_CLI_BUILD=1
 $ docker-compose -f docker-compose-with-maven.yaml up --build -d
 $ docker-compose -f docker-compose.yaml up --build -d
-$ docker-compose -f docker-compose.yaml up -f docker-compose-ai.yaml up --build -d
+$ docker-compose -f docker-compose.yaml -f docker-compose-ai.yaml up --build -d
 ```
 ## Git Flow Setup
 ```shell
