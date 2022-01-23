@@ -4,9 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import pl.tul.emailsemotions.shared.api.AccountType;
-import pl.tul.emailsemotions.shared.exceptions.WrongArgumentException;
 import pl.tul.emailsemotions.shared.verify.AccountTypeVerifier;
 import pl.tul.emailsemotions.userservice.clients.EmotionsClient;
 import pl.tul.emailsemotions.userservice.clients.FormalityClient;
@@ -18,6 +24,7 @@ import pl.tul.emailsemotions.userservice.model.User;
 import pl.tul.emailsemotions.userservice.services.UsersService;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +54,7 @@ public class UsersController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity add(@RequestBody AddUserDTO user) {
+    public ResponseEntity add(@Valid @RequestBody AddUserDTO user) {
         return ResponseEntity.ok(userService.add(user));
     }
 

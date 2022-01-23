@@ -1,30 +1,35 @@
 package pl.tul.emailsemotions.userservice.services;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.tul.emailsemotions.shared.api.AccountType;
+import pl.tul.emailsemotions.shared.exceptions.AlreadyTakenException;
 import pl.tul.emailsemotions.userservice.clients.MailClient;
 import pl.tul.emailsemotions.userservice.clients.models.MailObject;
 import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
-import pl.tul.emailsemotions.userservice.model.UserRepository;
 import pl.tul.emailsemotions.userservice.model.User;
+import pl.tul.emailsemotions.userservice.model.UserRepository;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class UsersService {
     private final UserRepository userRepository;
     private final MailClient mailClient;
+    private final Environment env;
 
-    @Autowired()
-    private Environment env;
+    public UsersService(UserRepository userRepository,
+                        MailClient mailClient,
+                        Environment env) {
+        this.userRepository = userRepository;
+        this.mailClient = mailClient;
+        this.env = env;
+    }
 
     /**
      * Method responsible for adding user into database
@@ -32,6 +37,12 @@ public class UsersService {
      * @return User save into database
      */
     public User add(AddUserDTO user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new AlreadyTakenException("Username is already taken");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new AlreadyTakenException("Email is already taken");
+        }
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
         User userToSaveInDB = User.builder()
             .username(user.getUsername())
@@ -125,25 +136,5 @@ public class UsersService {
             throw new EntityNotFoundException();
         }
     }
-
-    //TODO: delete this
-//    public Boolean login(LoginDTO loginDTO) {
-//        User user;
-//        String username = loginDTO.getUsername();
-//        try {
-//            user = this.findByUsername(username);
-//        }   catch (EntityNotFoundException ex) {
-//            log.error("User with username: " + username + " not found.");
-//            throw new EntityNotFoundException();
-//        }
-//        if(user.getPassword().equals(loginDTO.getPassword())) {
-//            log.info("User "+username+" logged in");
-//            return true;
-//        } else {
-//            log.info("User "+username+": wrong password");
-//            return false;
-//        }
-//    }
-
 
 }
