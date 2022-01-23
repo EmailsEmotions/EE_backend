@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import java.util.UUID;
 
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"pl.tul.emailsemotions"})
 @EnableFeignClients
 public class EmotionsServiceApplication {
 

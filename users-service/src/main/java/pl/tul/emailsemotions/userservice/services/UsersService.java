@@ -3,17 +3,15 @@ package pl.tul.emailsemotions.userservice.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.tul.emailsemotions.shared.api.AccountType;
 import pl.tul.emailsemotions.userservice.clients.MailClient;
 import pl.tul.emailsemotions.userservice.clients.models.MailObject;
 import pl.tul.emailsemotions.userservice.dto.AddUserDTO;
-import pl.tul.emailsemotions.userservice.dto.LoginDTO;
-import pl.tul.emailsemotions.userservice.model.AccountType;
-import pl.tul.emailsemotions.userservice.model.User;
 import pl.tul.emailsemotions.userservice.model.UserRepository;
-
+import pl.tul.emailsemotions.userservice.model.User;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
@@ -34,14 +32,14 @@ public class UsersService {
      * @return User save into database
      */
     public User add(AddUserDTO user) {
+        String password = new BCryptPasswordEncoder().encode(user.getPassword());
         User userToSaveInDB = User.builder()
             .username(user.getUsername())
-            .password(user.getPassword())
+            .password(password)
             .email(user.getEmail())
             .accountType(AccountType.STANDARD)
             .active(true)
             .confirmed(false)
-            .canAdmin(false)
             .build();
         User userdb = userRepository.save(userToSaveInDB);
         log.info("Added user to database: " + userdb);
@@ -128,23 +126,24 @@ public class UsersService {
         }
     }
 
-    public Boolean login(LoginDTO loginDTO) {
-        User user;
-        String username = loginDTO.getUsername();
-        try {
-            user = this.findByUsername(username);
-        }   catch (EntityNotFoundException ex) {
-            log.error("User with username: " + username + " not found.");
-            throw new EntityNotFoundException();
-        }
-        if(user.getPassword().equals(loginDTO.getPassword())) {
-            log.info("User "+username+" logged in");
-            return true;
-        } else {
-            log.info("User "+username+": wrong password");
-            return false;
-        }
-    }
+    //TODO: delete this
+//    public Boolean login(LoginDTO loginDTO) {
+//        User user;
+//        String username = loginDTO.getUsername();
+//        try {
+//            user = this.findByUsername(username);
+//        }   catch (EntityNotFoundException ex) {
+//            log.error("User with username: " + username + " not found.");
+//            throw new EntityNotFoundException();
+//        }
+//        if(user.getPassword().equals(loginDTO.getPassword())) {
+//            log.info("User "+username+" logged in");
+//            return true;
+//        } else {
+//            log.info("User "+username+": wrong password");
+//            return false;
+//        }
+//    }
 
 
 }

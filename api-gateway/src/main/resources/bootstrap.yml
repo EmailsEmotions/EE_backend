@@ -4,6 +4,12 @@ spring:
       uri: http://localhost:8888
   application:
     name: api-gateway
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  jpa:
+    hibernate:
+      ddl-auto: update
 spring.logstash:
   server: localhost
   port: 5000
@@ -12,9 +18,17 @@ spring:
   config:
     activate:
       on-profile: docker
+  application:
+    name: api-gateway
   cloud:
     config:
       uri: http://config-server:8888
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  jpa:
+    hibernate:
+      ddl-auto: update
 spring.logstash:
   server: logstash-service
   port: 5000
