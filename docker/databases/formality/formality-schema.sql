@@ -5,8 +5,8 @@ USE formality;
 CREATE TABLE IF NOT EXISTS texts (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT UNSIGNED,
-    text TEXT
-) engine=InnoDB;
+    text TEXT COLLATE utf8_unicode_ci 
+) engine=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS formality_result (
      id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -24,3 +24,8 @@ CREATE TABLE IF NOT EXISTS formality_evaluation (
     informality TINYINT,
     FOREIGN KEY (text_id) REFERENCES texts(id)
 ) engine=InnoDB;
+ALTER DATABASE formality CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE texts CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE formality_result CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE formality_evaluation CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
